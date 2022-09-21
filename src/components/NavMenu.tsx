@@ -12,7 +12,14 @@ const NavMenu = () => {
                     <ListItemButton>
                         <ListItemIcon>
                         </ListItemIcon>
-                        <ListItemText primary="Some Text"/>
+                        <ListItemText primary="Notificatoin Services"/>
+                    </ListItemButton>
+                </ListItem>
+                <ListItem component={Link} to="/" >
+                    <ListItemButton>
+                        <ListItemIcon>
+                        </ListItemIcon>
+                        <ListItemText primary="Home"/>
                     </ListItemButton>
                 </ListItem>
             </List>

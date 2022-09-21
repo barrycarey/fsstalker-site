@@ -15,3 +15,4 @@ export type Monitor = {
     name: string;
     notification_services: NotificationService[];
 }
+
