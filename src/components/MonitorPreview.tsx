@@ -1,18 +1,19 @@
 import {Button, Card, CardActionArea, CardActions, CardContent, CardMedia, Grid, Typography} from "@mui/material";
-import {Monitor} from "../interfaces/common";
+import {Watch} from "../interfaces/common";
 import {useCallback, useEffect, useState} from "react";
 import axios from "axios";
 
 type CompProps = {
-    monitor: Monitor
+    watch: Watch
+    onSelect: (watch: Watch) => void
 }
 
-const MonitorPreview = ({monitor}: CompProps) => {
+const MonitorPreview = ({watch, onSelect}: CompProps) => {
 
     const [bannerImg, setBannerImg] = useState<string>();
 
     useEffect(() => {
-        axios.get(`https://oauth.reddit.com/r/${monitor.subreddit}/about`, {
+        axios.get(`https://oauth.reddit.com/r/${watch.subreddit}/about`, {
             headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
         })
             .then((res) => {
@@ -23,15 +24,15 @@ const MonitorPreview = ({monitor}: CompProps) => {
                 setBannerImg(res.data.data.banner_background_image.split('?')[0])
             })
             .catch((error) => {
-                console.log(`Failed to get banner for ${monitor.subreddit}`)
+                console.log(`Failed to get banner for ${watch.subreddit}`)
             })
 
     }, [bannerImg])
 
     return (
-        <div>
-            <Card sx={{ maxWidth: 275 }}>
-                <CardActionArea>
+
+            <Card>
+                <CardActionArea onClick={() => onSelect(watch)}>
                 {bannerImg != null &&
                     <CardMedia
                         component="img"
@@ -48,29 +49,29 @@ const MonitorPreview = ({monitor}: CompProps) => {
                             </Grid>
                         </Grid>
                         <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-                            r/{monitor.subreddit}
+                            r/{watch.subreddit}
                         </Typography>
                         <Typography variant="h5" component="div">
-                            {monitor.name}
+                            {watch.name}
                         </Typography>
                         <Typography color="text.secondary">
                             Include
                         </Typography>
                         <Typography variant="body2">
-                            {monitor.include}
+                            {watch.include}
                         </Typography>
                         <Typography color="text.secondary">
                             Exclude
                         </Typography>
                         <Typography variant="body2">
-                            {monitor.exclude}
+                            {watch.exclude}
                         </Typography>
                     </CardContent>
 
                 </CardActionArea>
 
             </Card>
-        </div>
+
     )
 }
 

@@ -14,6 +14,7 @@ import {QueryClient, QueryClientProvider} from "react-query";
 import {ReactQueryDevtools} from "react-query/devtools";
 import NotificationServices from "./pages/NotificationServices";
 import NavMenu from "./components/NavMenu";
+import QueryDemo from "./components/QueryDemo";
 
 const queryClient = new QueryClient()
 
@@ -49,6 +50,7 @@ function App() {
                                             <NotificationServices />
                                         </RequireAuth>
                                     } />
+                                    <Route path="/demo" element={<QueryDemo />} />
 
                                 </Routes>
                             </AuthProvider>

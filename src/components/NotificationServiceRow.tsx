@@ -4,7 +4,7 @@ import {useCallback} from "react";
 
 type CompProps = {
     notificationSvc: NotificationService,
-    openEdit: (id: number) => void
+    openEdit: (notificationSvc: NotificationService) => void
 }
 
 
@@ -12,9 +12,8 @@ type CompProps = {
 const NotificationServiceRow = ({notificationSvc, openEdit}: CompProps) => {
 
     const boxOnClick = useCallback(() => {
-        console.log('box on click')
-        openEdit(notificationSvc.id);
-    }, [])
+        openEdit(notificationSvc);
+    }, [notificationSvc])
 
     const ContainingBox = styled('div')({
         borderRadius: 6,
@@ -43,6 +42,7 @@ const NotificationServiceRow = ({notificationSvc, openEdit}: CompProps) => {
         <ContainingBox onClick={boxOnClick}>
             <SubBox sx={{flexBasis: '50px'}}>Icon</SubBox>
             <SubBox sx={{flexBasis: '100%'}}>{notificationSvc.name}</SubBox>
+            <SubBox sx={{flexBasis: '50px'}}>Delete</SubBox>
         </ContainingBox>
     )
 }

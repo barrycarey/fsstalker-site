@@ -1,13 +1,13 @@
 export type NotificationService = {
     url: string;
-    owner_id: number;
-    id: number;
+    owner_id: number | null;
+    id: number | null;
     name: string
 }
 
-export type Monitor = {
-    owner_id: number;
-    id: number;
+export type Watch = {
+    owner_id: number | null;
+    id: number | null;
     active: boolean;
     include: string;
     exclude: string;
