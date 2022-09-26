@@ -3,18 +3,18 @@ import logo from './logo.svg';
 import './App.css';
 import {AppBar, Box, Button, Container, Drawer, Grid, IconButton, Toolbar, Typography} from "@mui/material";
 import MenuIcon from '@mui/icons-material/Menu';
-import Header from "./components/Header";
+import Header from "./components/common/Header";
 import {BrowserRouter, Route, Routes} from "react-router-dom";
 import Login from "./pages/Login";
 import Home from "./pages/Home";
-import RequireAuth from "./components/RequireAuth";
+import RequireAuth from "./components/common/RequireAuth";
 import {AuthProvider} from "./hooks/useAuth";
 import RedditAuthCB from "./pages/RedditAuthCB";
 import {QueryClient, QueryClientProvider} from "react-query";
 import {ReactQueryDevtools} from "react-query/devtools";
 import NotificationServices from "./pages/NotificationServices";
-import NavMenu from "./components/NavMenu";
-import QueryDemo from "./components/QueryDemo";
+import NavMenu from "./components/common/NavMenu";
+
 
 const queryClient = new QueryClient()
 
@@ -50,7 +50,7 @@ function App() {
                                             <NotificationServices />
                                         </RequireAuth>
                                     } />
-                                    <Route path="/demo" element={<QueryDemo />} />
+
 
                                 </Routes>
                             </AuthProvider>

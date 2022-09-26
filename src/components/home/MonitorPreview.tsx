@@ -1,5 +1,5 @@
 import {Button, Card, CardActionArea, CardActions, CardContent, CardMedia, Grid, Typography} from "@mui/material";
-import {Watch} from "../interfaces/common";
+import {Watch} from "../../interfaces/common";
 import {useCallback, useEffect, useState} from "react";
 import axios from "axios";
 

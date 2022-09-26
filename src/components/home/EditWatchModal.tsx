@@ -5,14 +5,14 @@ import {
     DialogActions,
     DialogContent,
     DialogContentText,
-    DialogTitle, Grid, styled, Switch,
+    DialogTitle, FormControlLabel, FormGroup, Grid, styled, Switch,
     TextField, Typography
 } from "@mui/material";
-import {NotificationService, Watch} from "../interfaces/common";
+import {NotificationService, Watch} from "../../interfaces/common";
 import {useCallback, useEffect, useState} from "react";
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import MonitorPreview from "./MonitorPreview";
-import {useNotificatoinServices} from "../util/queries";
+import {useNotificatoinServices} from "../../util/queries";
 import NotificationsOffIcon from '@mui/icons-material/NotificationsOff';
 import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -89,17 +89,39 @@ const EditWatchModal = ({isOpen, closeModal, watch, saveWatch}: CompProps) => {
         return selectedWatch.id !== null ? "Update" : "Create";
     }, [selectedWatch])
 
-    const flipSwitch = useCallback((e: any) => {
-        setSelectedWatch((prevState) => {
-            console.log(prevState);
-            return {...prevState, active: !prevState.active}
-        })
-    }, [])
+    const addNotificationSvc = useCallback((id: number | null) => {
+        if (!id) {
+            return;
+        }
+        const svcToAdd = notificationServices.data.find((svc: NotificationService) => svc.id === id);
+        if (svcToAdd) {
+            const newSvcList = selectedWatch.notification_services;
+            newSvcList.push(svcToAdd);
+            setSelectedWatch((prevState) => ({...prevState, notification_services: newSvcList}))
+        }
+    }, [notificationServices])
 
-    const isActiveNotificationSvc = useCallback((svcId: number) => {
-        let activeIdx = selectedWatch.notification_services.findIndex((svc) => svc.id === svcId);
-        return activeIdx === -1 ? false : true
-    }, [selectedWatch])
+    const removeNotificationSvc = useCallback((id: number | null) => {
+        if (!id) {
+            return;
+        }
+        const svcToRemoveIdx = selectedWatch.notification_services.findIndex((svc: NotificationService) => svc.id === id);
+        if (svcToRemoveIdx === -1) {
+            console.log(`Failed to find active notify svc with ID ${id}`);
+            return;
+        }
+        let newSvcList = selectedWatch.notification_services;
+        console.log("removeNotificationSvc")
+        console.log(newSvcList)
+        newSvcList.splice(svcToRemoveIdx, 1);
+        setSelectedWatch((prevState) => (
+            {
+                ...prevState,
+                notification_services: newSvcList
+            }
+        ))
+    }, [notificationServices, selectedWatch])
+
 
     return (
         <Box>
@@ -107,15 +129,18 @@ const EditWatchModal = ({isOpen, closeModal, watch, saveWatch}: CompProps) => {
                 <DialogTitle>Edit Watch: {selectedWatch.name}</DialogTitle>
                 <DialogContent>
                     <Box>
-                        <Switch
-                            checked={selectedWatch.active}
-                            onChange={(e: any )=> setSelectedWatch((prevState) => ({...prevState, active: !prevState.active}))}
-                        />
+
+                        <FormGroup>
+                            <FormControlLabel control={<Switch
+                                checked={selectedWatch.active}
+                                onChange={(e: any )=> setSelectedWatch((prevState) => ({...prevState, active: !prevState.active}))}
+                            />} label="Active" />
+                        </FormGroup>
                         <TextField
                             autoFocus
                             margin="dense"
                             id="name"
-                            label="Service Name"
+                            label="Watch Name"
                             type="text"
                             fullWidth
                             variant="standard"
@@ -134,6 +159,28 @@ const EditWatchModal = ({isOpen, closeModal, watch, saveWatch}: CompProps) => {
                             value={selectedWatch.subreddit}
                             onChange={(e: any )=> setSelectedWatch((prevState) => ({...prevState, url: e.target.value}))}
                         />
+                        <TextField
+                            autoFocus
+                            margin="dense"
+                            id="include"
+                            label="Trigger Words"
+                            type="text"
+                            fullWidth
+                            variant="standard"
+                            value={selectedWatch.include}
+                            onChange={(e: any )=> setSelectedWatch((prevState) => ({...prevState, include: e.target.value}))}
+                        />
+                        <TextField
+                            autoFocus
+                            margin="dense"
+                            id="exclude"
+                            label="Exclude Words"
+                            type="text"
+                            fullWidth
+                            variant="standard"
+                            value={selectedWatch.include}
+                            onChange={(e: any )=> setSelectedWatch((prevState) => ({...prevState, exclude: e.target.value}))}
+                        />
                     </Box>
                     <Box sx={{mt: 2}}>
                         <Typography variant={"h6"}>Active Notification Services</Typography>
@@ -143,7 +190,7 @@ const EditWatchModal = ({isOpen, closeModal, watch, saveWatch}: CompProps) => {
                                     <ContainingBox sx={{mt: 2}} key={svc.id}>
                                         <SubBox sx={{flexBasis: "50px"}}><NotificationsIcon /></SubBox>
                                         <SubBox sx={{flexBasis: '100%'}}>{svc.name}</SubBox>
-                                        <SubBox sx={{flexBasis: "50px"}}><DeleteIcon /></SubBox>
+                                        <SubBox sx={{flexBasis: "50px"}}><DeleteIcon onClick={() => removeNotificationSvc(svc.id)}/></SubBox>
                                     </ContainingBox>
                                     </>
                                 )
@@ -157,7 +204,7 @@ const EditWatchModal = ({isOpen, closeModal, watch, saveWatch}: CompProps) => {
                                     <ContainingBox sx={{mt: 2}}>
                                         <SubBox sx={{flexBasis: "50px"}}><NotificationsOffIcon /></SubBox>
                                         <SubBox sx={{flexBasis: '100%'}}>{svc.name}</SubBox>
-                                        <SubBox sx={{flexBasis: "50px"}}><AddIcon /></SubBox>
+                                        <SubBox sx={{flexBasis: "50px"}}><AddIcon onClick={() => addNotificationSvc(svc.id)} /></SubBox>
                                     </ContainingBox>
                                 </>
                             )

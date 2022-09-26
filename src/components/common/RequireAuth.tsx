@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
 import {Navigate, useLocation} from 'react-router-dom';
-import AuthConsumer from '../hooks/useAuth';
+import AuthConsumer from '../../hooks/useAuth';
 
 export default function RequireAuth({ children }: { children: JSX.Element }) {
     // const { signout, userData } = useAuth();

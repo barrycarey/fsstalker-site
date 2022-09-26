@@ -1,4 +1,4 @@
-import {NotificationService} from "../interfaces/common";
+import {NotificationService} from "../../interfaces/common";
 import {Box, Grid, styled} from "@mui/material";
 import {useCallback} from "react";
 

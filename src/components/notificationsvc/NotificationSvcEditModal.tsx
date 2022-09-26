@@ -8,7 +8,7 @@ import {
     DialogTitle,
     TextField
 } from "@mui/material";
-import {NotificationService} from "../interfaces/common";
+import {NotificationService} from "../../interfaces/common";
 import {FormEvent, useCallback, useEffect, useState} from "react";
 
 type CompPromps = {

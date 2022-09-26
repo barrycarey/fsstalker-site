@@ -2,9 +2,9 @@ import {useNotificatoinServices} from "../util/queries";
 import {Box, Button, Grid, Typography} from "@mui/material";
 import {NotificationService} from "../interfaces/common";
 import AddCircleIcon from '@mui/icons-material/AddCircle';
-import NotificationServiceRow from "../components/NotificationServiceRow";
+import NotificationServiceRow from "../components/notificationsvc/NotificationServiceRow";
 import {useCallback, useState} from "react";
-import NotificationSvcEditModal from "../components/NotificationSvcEditModal";
+import NotificationSvcEditModal from "../components/notificationsvc/NotificationSvcEditModal";
 import {useMutation, useQuery, useQueryClient} from "react-query";
 import axios from "axios";
 

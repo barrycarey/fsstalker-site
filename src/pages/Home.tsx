@@ -1,16 +1,16 @@
 import {useWatches, useNotificatoinServices} from "../util/queries";
 import {useMutation, useQuery, useQueryClient} from "react-query";
 import axios from "axios";
-import Monitors from "../components/Monitors";
 import {Box, Button, Grid} from "@mui/material";
 import {useAuth} from "../hooks/useAuth";
-import EditWatchModal from "../components/EditWatchModal";
+import EditWatchModal from "../components/home/EditWatchModal";
 import {useCallback, useState} from "react";
 import {NotificationService, Watch} from "../interfaces/common";
-import MonitorPreview from "../components/MonitorPreview";
+import MonitorPreview from "../components/home/MonitorPreview";
 import {red} from "@mui/material/colors";
+import {withSnackbar} from "notistack";
 
-const Home = () => {
+const Home = ({enqueueSnackbar}: any) => {
     const [watchEditIsOpen, setWatchEditIsOpen] = useState<boolean>(false);
     const [selectedWatch, setSelectedWatch] = useState<Watch | null>(null);
 
@@ -19,6 +19,19 @@ const Home = () => {
     const notificationServices = useNotificatoinServices('barrycarey');
     const queryClient = useQueryClient();
     const updateWatch = useMutation(
+        (newWatch: Watch) => axios.patch(`${process.env.REACT_APP_STALKER_API}/watch?token=${localStorage.getItem('token')}`, newWatch),
+        {
+            onSuccess: () => {
+                queryClient.invalidateQueries(['watches']);
+                enqueueSnackbar('Watch saved', {variant: 'success'})
+                setWatchEditIsOpen(!watchEditIsOpen);
+            },
+            onError: (error, variables, context) => {
+                enqueueSnackbar(`'Failed to save: ${error}`, {variant: 'error'})
+            }
+        }
+    )
+    const createWatch = useMutation(
         (newWatch: Watch) => axios.post(`${process.env.REACT_APP_STALKER_API}/watch?token=${localStorage.getItem('token')}`, newWatch),
         {
             onSuccess: () => {
@@ -29,7 +42,6 @@ const Home = () => {
 
     const closeEditModal = useCallback(() => {
         setSelectedWatch(null);
-        setWatchEditIsOpen(!watchEditIsOpen)
     }, [watchEditIsOpen])
 
     const openEditModal = useCallback((selectedWatch: Watch) => {
@@ -40,6 +52,7 @@ const Home = () => {
     const saveWatch = useCallback((watch: Watch) => {
         console.log('Calling Save')
         updateWatch.mutate(watch);
+        setWatchEditIsOpen(false);
     }, [watches.data])
 
     if (watches.data) {
@@ -66,4 +79,4 @@ const Home = () => {
     )
 }
 
-export default Home
+export default withSnackbar(Home);
