@@ -5,7 +5,7 @@ import {
     DialogActions,
     DialogContent,
     DialogContentText,
-    DialogTitle, FormControlLabel, FormGroup, Grid, styled, Switch,
+    DialogTitle, Divider, FormControlLabel, FormGroup, Grid, styled, Switch,
     TextField, Typography
 } from "@mui/material";
 import {NotificationService, Watch} from "../../interfaces/common";
@@ -16,6 +16,7 @@ import {useNotificatoinServices} from "../../util/queries";
 import NotificationsOffIcon from '@mui/icons-material/NotificationsOff';
 import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
+import TriggerWords from "./TriggerWords";
 
 type CompProps = {
     isOpen: boolean,
@@ -48,6 +49,7 @@ const ContainingBox = styled('div')({
     alignItems: 'center',
     verticalAlign: 'middle',
 })
+
 const SubBox = styled('div')({
     height: '100%',
     justifyContent: 'left',
@@ -84,6 +86,15 @@ const EditWatchModal = ({isOpen, closeModal, watch, saveWatch}: CompProps) => {
         })
         setAvailableNotificationSvc(availableSvc);
     }, [selectedWatch])
+
+    const updateIncludeWords = useCallback((words: string) => {
+        setSelectedWatch((prevState) => ({...prevState, include: words}));
+    }, [])
+
+    const updateExcludeWords = useCallback((words: string) => {
+        console.log(`Updating exclude with ${words}`)
+        setSelectedWatch((prevState) => ({...prevState, exclude: words}));
+    }, [])
 
     const getSaveBtnText = useCallback(() => {
         return selectedWatch.id !== null ? "Update" : "Create";
@@ -157,30 +168,18 @@ const EditWatchModal = ({isOpen, closeModal, watch, saveWatch}: CompProps) => {
                             fullWidth
                             variant="standard"
                             value={selectedWatch.subreddit}
-                            onChange={(e: any )=> setSelectedWatch((prevState) => ({...prevState, url: e.target.value}))}
+                            onChange={(e: any )=> setSelectedWatch((prevState) => ({...prevState, subreddit: e.target.value}))}
                         />
-                        <TextField
-                            autoFocus
-                            margin="dense"
-                            id="include"
-                            label="Trigger Words"
-                            type="text"
-                            fullWidth
-                            variant="standard"
-                            value={selectedWatch.include}
-                            onChange={(e: any )=> setSelectedWatch((prevState) => ({...prevState, include: e.target.value}))}
-                        />
-                        <TextField
-                            autoFocus
-                            margin="dense"
-                            id="exclude"
-                            label="Exclude Words"
-                            type="text"
-                            fullWidth
-                            variant="standard"
-                            value={selectedWatch.include}
-                            onChange={(e: any )=> setSelectedWatch((prevState) => ({...prevState, exclude: e.target.value}))}
-                        />
+
+                        <Box sx={{mt: 2}}>
+                            <Box>
+
+                            </Box>
+
+                            <TriggerWords triggerWords={selectedWatch.include} updateTriggerWords={updateIncludeWords} greenChip={true} title="Trigger Words"/>
+                            <TriggerWords triggerWords={selectedWatch.exclude} updateTriggerWords={updateExcludeWords} greenChip={false} title="Exclude Words"/>
+                        </Box>
+
                     </Box>
                     <Box sx={{mt: 2}}>
                         <Typography variant={"h6"}>Active Notification Services</Typography>

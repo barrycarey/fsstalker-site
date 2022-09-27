@@ -19,7 +19,7 @@ const NavMenu = () => {
                     <ListItemButton>
                         <ListItemIcon>
                         </ListItemIcon>
-                        <ListItemText primary="Home"/>
+                        <ListItemText primary="HomeMonitors"/>
                     </ListItemButton>
                 </ListItem>
                 <ListItem component={Link} to="/demo" >
