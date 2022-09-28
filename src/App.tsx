@@ -12,6 +12,8 @@ import {ReactQueryDevtools} from "react-query/devtools";
 import NotificationServices from "./pages/NotificationServices";
 import NavMenu from "./components/common/NavMenu";
 import Home from "./pages/Home";
+import Profile from "./pages/Profile";
+import PatreonAuthCb from "./pages/PatreonAuthCb";
 
 
 
@@ -38,6 +40,7 @@ function App() {
                                 <Routes>
                                     <Route path="/login" element={<Login />}/>
                                     <Route path="/authcb" element={<RedditAuthCB />} />
+                                    <Route path="/patreoncb" element={<PatreonAuthCb />} />
 
                                     <Route path="/" element={
                                         <RequireAuth>
@@ -47,6 +50,11 @@ function App() {
                                     <Route path="/notification-services" element={
                                         <RequireAuth>
                                             <NotificationServices />
+                                        </RequireAuth>
+                                    } />
+                                    <Route path="/profile" element={
+                                        <RequireAuth>
+                                            <Profile />
                                         </RequireAuth>
                                     } />
 

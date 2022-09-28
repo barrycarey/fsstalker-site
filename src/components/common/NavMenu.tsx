@@ -3,6 +3,7 @@ import {Link, useNavigate} from "react-router-dom";
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import OtherHousesIcon from '@mui/icons-material/OtherHouses';
 import NotificationsActiveIcon from '@mui/icons-material/NotificationsActive';
+import Person2Icon from '@mui/icons-material/Person2';
 
 type NavItem = {
     text: string,
@@ -29,6 +30,11 @@ const NavMenu = () => {
             text: "Sent Alerts",
             path: "/sent-alerts",
             icon: <NotificationsActiveIcon />
+        },
+        {
+            text: "My Profile",
+            path: "/profile",
+            icon: <Person2Icon />
         }
     ]
 

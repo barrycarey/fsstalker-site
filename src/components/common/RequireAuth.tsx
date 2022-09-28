@@ -12,7 +12,7 @@ export default function RequireAuth({ children }: { children: JSX.Element }) {
         return children
     } else{
         console.log('AUTH: NO USER DATA')
-        return <Navigate to="/login" replace />
+        return <Navigate to="/login" replace state={{path: location.pathname}} />
     }
 
 }
