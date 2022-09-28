@@ -4,24 +4,31 @@ import {
     Dialog,
     DialogActions,
     DialogContent,
-    DialogContentText,
-    DialogTitle, Divider, FormControlLabel, FormGroup, Grid, styled, Switch,
-    TextField, Typography
+    DialogTitle,
+    FormControlLabel,
+    FormGroup,
+    styled,
+    Switch,
+    TextField,
+    Typography
 } from "@mui/material";
 import {NotificationService, Watch} from "../../interfaces/common";
 import {useCallback, useEffect, useState} from "react";
 import NotificationsIcon from '@mui/icons-material/Notifications';
-import MonitorPreview from "./MonitorPreview";
-import {useNotificatoinServices} from "../../util/queries";
 import NotificationsOffIcon from '@mui/icons-material/NotificationsOff';
 import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
 import TriggerWords from "./TriggerWords";
+import {useSnackbar} from "notistack";
+import AuthConsumer from "../../hooks/useAuth";
+import {useNotificationSvc} from "../../hooks/useNotificationSvc";
+
 
 type CompProps = {
     isOpen: boolean,
     closeModal: () => void,
     saveWatch: (watch: Watch) => void,
+    deleteWatch: (id: number) => void,
     watch: Watch | null,
 }
 
@@ -60,10 +67,13 @@ const SubBox = styled('div')({
     display: 'inline-flex',
 })
 
-const EditWatchModal = ({isOpen, closeModal, watch, saveWatch}: CompProps) => {
-    const notificationServices = useNotificatoinServices('barrycarey');
+const EditWatchModal = ({isOpen, closeModal, watch, saveWatch, deleteWatch}: CompProps) => {
+    const authCtx = AuthConsumer();
+    const notificationServices = useNotificationSvc(authCtx.userData?.username);
     const [selectedWatch, setSelectedWatch] = useState<Watch>({...newWatch});
+    const { enqueueSnackbar } = useSnackbar();
     const [availableNotificationSvc, setAvailableNotificationSvc] = useState<NotificationService[]>([]);
+
     useEffect(() => {
         if (watch != null) {
             setSelectedWatch(watch);
@@ -72,13 +82,13 @@ const EditWatchModal = ({isOpen, closeModal, watch, saveWatch}: CompProps) => {
 
     useEffect(() => {
         let availableSvc: NotificationService[] = [];
-        if (!notificationServices.data) {
+        if (!notificationServices.services.data) {
             setAvailableNotificationSvc(availableSvc);
             return;
         }
         console.log('Avaialbe services')
-        console.log(notificationServices.data);
-        notificationServices.data.forEach((svc: NotificationService) => {
+        console.log(notificationServices.services.data);
+        notificationServices.services.data.forEach((svc: NotificationService) => {
             let activeIdx = selectedWatch.notification_services.findIndex((i) => i.id === svc.id);
             if (activeIdx === -1) {
                 availableSvc.push(svc);
@@ -104,7 +114,7 @@ const EditWatchModal = ({isOpen, closeModal, watch, saveWatch}: CompProps) => {
         if (!id) {
             return;
         }
-        const svcToAdd = notificationServices.data.find((svc: NotificationService) => svc.id === id);
+        const svcToAdd = notificationServices.services.data.find((svc: NotificationService) => svc.id === id);
         if (svcToAdd) {
             const newSvcList = selectedWatch.notification_services;
             newSvcList.push(svcToAdd);
@@ -133,10 +143,22 @@ const EditWatchModal = ({isOpen, closeModal, watch, saveWatch}: CompProps) => {
         ))
     }, [notificationServices, selectedWatch])
 
+    const close = useCallback(() => {
+        setSelectedWatch({...newWatch});
+        closeModal();
+    }, [])
+
+    const deleteWatchOnClick = useCallback(() => {
+        if (selectedWatch.id !== null) {
+            deleteWatch(selectedWatch.id);
+            return;
+        }
+        enqueueSnackbar('Failed to delete notification service', {variant: 'error'})
+    }, [selectedWatch])
 
     return (
         <Box>
-            <Dialog open={isOpen} onClose={closeModal}>
+            <Dialog open={isOpen} onClose={close}>
                 <DialogTitle>Edit Watch: {selectedWatch.name}</DialogTitle>
                 <DialogContent>
                     <Box>
@@ -211,7 +233,8 @@ const EditWatchModal = ({isOpen, closeModal, watch, saveWatch}: CompProps) => {
                     </Box>
                 </DialogContent>
                 <DialogActions >
-                    <Button onClick={closeModal}>Cancel</Button>
+                    <Button color="error" onClick={deleteWatchOnClick}>Delete</Button>
+                    <Button onClick={close}>Cancel</Button>
                     <Button onClick={() => saveWatch(selectedWatch)}>{getSaveBtnText()}</Button>
                 </DialogActions>
             </Dialog>

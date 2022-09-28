@@ -1,49 +1,42 @@
 import {NotificationService} from "../../interfaces/common";
-import {Box, Grid, styled} from "@mui/material";
+import {Box, Grid, Paper, styled} from "@mui/material";
 import {useCallback} from "react";
+import DeleteIcon from '@mui/icons-material/Delete';
+import {RoundedRow, RoundedRowSections} from "../../util/styles";
+import {useSnackbar} from "notistack";
 
 type CompProps = {
     notificationSvc: NotificationService,
-    openEdit: (notificationSvc: NotificationService) => void
+    openEdit: (notificationSvc: NotificationService) => void,
+    deleteSvc: (id: number) => void
 }
 
 
 
-const NotificationServiceRow = ({notificationSvc, openEdit}: CompProps) => {
+const NotificationServiceRow = ({notificationSvc, openEdit, deleteSvc}: CompProps) => {
+
+    const { enqueueSnackbar } = useSnackbar();
 
     const boxOnClick = useCallback(() => {
         openEdit(notificationSvc);
     }, [notificationSvc])
 
-    const ContainingBox = styled('div')({
-        borderRadius: 6,
-        maxWidth: '100%',
-        height: '55px',
-        background: '#3d3d3d',
-        display: 'flex',
-        flexDirection: 'row',
-        justifyContent: 'left',
-        padding: 6,
-        alignItems: 'center',
-        borderWidth: 2,
-        borderStyle: 'solid',
-        verticalAlign: 'middle',
-    })
-    const SubBox = styled('div')({
-        height: '100%',
-        justifyContent: 'left',
-        borderStyle: 'solid',
-        borderWidth: 0,
-        overflow: 'hidden',
-        alignItems: 'center',
-        display: 'inline-flex',
-    })
+    const deleteOnClick = useCallback(() => {
+        if (notificationSvc.id !== null) {
+            deleteSvc(notificationSvc.id);
+            return;
+        }
+        enqueueSnackbar('Failed to delete notification service', {variant: 'error'})
+    }, [notificationSvc])
+
     return (
-        <ContainingBox onClick={boxOnClick}>
-            <SubBox sx={{flexBasis: '50px'}}>Icon</SubBox>
-            <SubBox sx={{flexBasis: '100%'}}>{notificationSvc.name}</SubBox>
-            <SubBox sx={{flexBasis: '50px'}}>Delete</SubBox>
-        </ContainingBox>
+
+            <RoundedRow>
+                <RoundedRowSections sx={{flexBasis: '50px'}} onClick={boxOnClick}>Icon</RoundedRowSections>
+                <RoundedRowSections sx={{flexBasis: '100%'}} onClick={boxOnClick}>{notificationSvc.name}</RoundedRowSections>
+                <RoundedRowSections sx={{flexBasis: '50px'}}><DeleteIcon onClick={deleteOnClick} /></RoundedRowSections>
+            </RoundedRow>
+
     )
 }
 

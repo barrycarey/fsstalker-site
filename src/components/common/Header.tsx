@@ -23,7 +23,7 @@ const Header = ({openMenu}: HeaderPropers) => {
                         <MenuIcon />
                     </IconButton>
                     <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-                        FS Stalker
+                        BST Sleuth
                     </Typography>
                 </Toolbar>
             </AppBar>
