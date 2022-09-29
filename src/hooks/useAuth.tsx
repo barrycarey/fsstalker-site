@@ -24,11 +24,13 @@ type CTXType = {
     userData: UserData | null;
     signout: () => void;
     authError: string | null;
+    isLoading: boolean
 };
 
 const authContext = createContext<CTXType>({
     userData: null,
     authError: null,
+    isLoading: true,
     signout: () => {},
 });
 
@@ -36,6 +38,7 @@ export function useAuth() {
     const [userData, setUserData] = useState<UserData | null>(null);
     const [authError, setAuthError] = useState<string | null>(null);
     const [recheckDelay, setRecheckDelay] = useState<number>(10000);
+    const [isLoading, setIsLoading] = useState<boolean>(true);
     let navigate = useNavigate();
 
 
@@ -53,16 +56,19 @@ export function useAuth() {
             })
         } catch (err) {
             setAuthError('Problem reaching authentication API');
+            setIsLoading(false);
             return;
         }
 
         if (res.status !== 200) {
             console.log(`Bad status from Auth API ${res.status}`);
             setAuthError(`Bad status from Auth API ${res.status}`);
+            setIsLoading(false);
             return;
         }
 
         setUserData({username: res.data.name, avatar: res.data.icon_img.split('?')[0]})
+        setIsLoading(false);
 
         setRecheckDelay(600000);
 
@@ -80,7 +86,7 @@ export function useAuth() {
         setUserData(null);
     };
 
-    return { signout, authError, userData };
+    return { signout, isLoading, authError, userData };
 }
 
 export function AuthProvider({ children }: { children: ReactNode }) {

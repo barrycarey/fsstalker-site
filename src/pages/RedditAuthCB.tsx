@@ -3,7 +3,7 @@ import {useEffect} from "react";
 const RedditAuthCB = () => {
 
     useEffect(() => {
-        console.log();
+        console.log('In Reddit Auth CB');
         const parsedParams: any = {};
         let urlData = window.location.href;
         if (process.env.REACT_APP_REDDIT_REDIRECT_URL == null) {

@@ -8,7 +8,7 @@ export function useWatches(username: string | undefined) {
     const queryClient = useQueryClient();
     const { enqueueSnackbar } = useSnackbar();
 
-    const watches = useQuery(['watches'], async () => {
+    const watches = useQuery<Watch[], Error>(['watches'], async () => {
         const {data} = await axios.get(`${process.env.REACT_APP_STALKER_API}/watch/${username}?token=${localStorage.getItem('token')}`);
         return data;
     });

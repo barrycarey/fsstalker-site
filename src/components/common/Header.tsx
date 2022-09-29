@@ -10,7 +10,7 @@ const Header = ({openMenu}: HeaderPropers) => {
 
     return (
         <Box sx={{ flexGrow: 1 }}>
-            <AppBar position="static">
+            <AppBar position="static" sx={{mb: 2}}>
                 <Toolbar>
                     <IconButton
                         size="large"
