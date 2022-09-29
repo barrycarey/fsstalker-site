@@ -2,4 +2,4 @@
 
 Frontend for the Reddit FSStalker bot
 
-[](/screenshots/home.png)
+![](https://raw.githubusercontent.com/barrycarey/fsstalker-site/master/screenshots/home.png)
