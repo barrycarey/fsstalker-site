@@ -14,6 +14,7 @@ import NavMenu from "./components/common/NavMenu";
 import Home from "./pages/Home";
 import Profile from "./pages/Profile";
 import PatreonAuthCb from "./pages/PatreonAuthCb";
+import Notifications from "./pages/Notifications";
 
 
 
@@ -50,6 +51,11 @@ function App() {
                                     <Route path="/notification-services" element={
                                         <RequireAuth>
                                             <NotificationServices />
+                                        </RequireAuth>
+                                    } />
+                                    <Route path="/notifications" element={
+                                        <RequireAuth>
+                                            <Notifications />
                                         </RequireAuth>
                                     } />
                                     <Route path="/profile" element={

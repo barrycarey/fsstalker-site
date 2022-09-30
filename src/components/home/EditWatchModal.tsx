@@ -33,6 +33,7 @@ type CompProps = {
 }
 
 const newWatch: Watch = {
+    sent_notifications: [],
     active: false,
     exclude: "",
     include: "",

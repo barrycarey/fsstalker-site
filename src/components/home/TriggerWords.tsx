@@ -28,7 +28,9 @@ const TriggerWords = ({triggerWords, updateTriggerWords, greenChip, title}: Comp
 
     useEffect(() => {
         if (triggerWords !== null) {
-            setTriggerList(triggerWords.split(","))
+            if (triggerWords !== "") {
+                setTriggerList(triggerWords.split(","))
+            }
         }
     },[triggerWords])
 
@@ -46,7 +48,7 @@ const TriggerWords = ({triggerWords, updateTriggerWords, greenChip, title}: Comp
         }
     }, [triggerTxtValue, triggerList])
 
-    const includeDelete = useCallback((idx: number) => {
+    const triggerWordDelete = useCallback((idx: number) => {
         //setTriggerList((items) => items.filter((_, index) => index !== idx));
         setTriggerList(prevState => {
             const updatedList = prevState.filter((_, index) => index !== idx)
@@ -63,7 +65,7 @@ const TriggerWords = ({triggerWords, updateTriggerWords, greenChip, title}: Comp
                 <Grid container spacing={0}>
                     {triggerList.map((i: string, idx: number) => (
                         <Grid item xs={4} xl={3}>
-                            <Chip size="small" label={i} onDelete={() => {includeDelete(idx)}} sx={{mb: 1}} color={greenChip ? "success" : "error"}/>
+                            <Chip size="small" label={i} onDelete={() => {triggerWordDelete(idx)}} sx={{mb: 1}} color={greenChip ? "success" : "error"}/>
                         </Grid>
                     ))}
 

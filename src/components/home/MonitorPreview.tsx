@@ -38,7 +38,7 @@ const MonitorPreview = ({watch, onSelect}: CompProps) => {
                         component="img"
                         height="140"
                         image={bannerImg}
-                        alt="green iguana"
+                        alt="Subreddit Banner"
                     />
                 }
 

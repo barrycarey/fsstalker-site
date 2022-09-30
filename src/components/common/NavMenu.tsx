@@ -27,8 +27,8 @@ const NavMenu = () => {
             icon: <NotificationsIcon />
         },
         {
-            text: "Sent Alerts",
-            path: "/sent-alerts",
+            text: "Notifications",
+            path: "/notifications",
             icon: <NotificationsActiveIcon />
         },
         {
