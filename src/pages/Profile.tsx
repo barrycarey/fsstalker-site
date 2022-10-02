@@ -1,5 +1,5 @@
-import {Box, Button, FormGroup, Grid, TextField, Typography} from "@mui/material";
-import {useCallback} from "react";
+import {Alert, AlertTitle, Box, Button, FormGroup, Grid, TextField, Typography} from "@mui/material";
+import {useCallback, useEffect, useState} from "react";
 import {useUser} from "../hooks/useUser";
 import AuthConsumer from "../hooks/useAuth";
 import LoadScreen from "../components/common/LoadScreen";
@@ -13,6 +13,23 @@ const Profile = () => {
     const userData = useUser(authCtx.userData?.username)
     const watches = useWatches(authCtx.userData?.username);
     const notificationServices = useNotificationSvc(authCtx.userData?.username);
+    const [overLimit, setOverLimit] = useState<boolean>(false);
+
+    useEffect(() => {
+        if (watches.watches.data && userData.user.data) {
+            if (watches.watches.data.length > userData.user.data.patreon_tier.max_watches) {
+                setOverLimit(true);
+                return;
+            }
+        }
+        if (notificationServices.services.data && userData.user.data) {
+            if (notificationServices.services.data.length > userData.user.data.patreon_tier.max_notification_services) {
+                setOverLimit(true);
+                return;
+            }
+        }
+        setOverLimit(false);
+    }, [watches.watches.data, notificationServices.services.data, userData])
 
     const openPatreonAuth = useCallback(() => {
         let authUrl = `https://www.patreon.com/oauth2/authorize?response_type=code&redirect_uri=${process.env.REACT_APP_PATREON_REDIRECT_URL}&client_id=${process.env.REACT_APP_PATREON_CLIENT_ID}&state=${localStorage.getItem('token')}`
@@ -76,6 +93,15 @@ const Profile = () => {
                         </RoundedRowSections>
                     }
                 </RoundedRow>
+
+                {overLimit &&
+                    <Box sx={{justifyContent: "left", textAlign: "left", mb: 2}}>
+                        <Alert severity="error">
+                            <AlertTitle>Over Limit</AlertTitle>
+                            You have exceeded the limit for your tier.  Your oldest services will be disabled
+                        </Alert>
+                    </Box>
+                }
 
                 <Grid container spacing={2}>
                     <Grid item xs={12} xl={4}>

@@ -1,6 +1,6 @@
 import {useMutation, useQuery, useQueryClient} from "react-query";
 import {useSnackbar} from "notistack";
-import axios from "axios";
+import axios, {AxiosError} from "axios";
 import {Watch} from "../interfaces/common";
 
 
@@ -20,8 +20,9 @@ export function useWatches(username: string | undefined) {
                 queryClient.invalidateQueries(['watches'])
                 enqueueSnackbar('Watch created', {variant: 'success'})
             },
-            onError: (error, variables, context) => {
-                enqueueSnackbar(`'Failed to create: ${error}`, {variant: 'error'})
+            onError: (error: AxiosError, variables, context) => {
+                // @ts-ignore
+                enqueueSnackbar(`'Failed to create: ${error.response.data.detail}`, {variant: 'error'})
             }
         }
     )
@@ -34,7 +35,8 @@ export function useWatches(username: string | undefined) {
                 enqueueSnackbar('Watch saved', {variant: 'success'})
             },
             onError: (error, variables, context) => {
-                enqueueSnackbar(`'Failed to save: ${error}`, {variant: 'error'})
+                // @ts-ignore
+                enqueueSnackbar(`'Failed to save: ${error.response.data.detail}`, {variant: 'error'})
             }
         }
     )

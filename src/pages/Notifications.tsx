@@ -4,6 +4,7 @@ import {useCallback, useEffect, useState} from "react";
 import {SentNotification, SentNotificationTableRow, Watch} from "../interfaces/common";
 import {Avatar, Box, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow} from "@mui/material";
 import axios from "axios";
+import LoadScreen from "../components/common/LoadScreen";
 
 type SubredditIcon = {
     subreddit: string,
@@ -42,6 +43,9 @@ const Notifications = () => {
 
     }, [sortedNotifications])
 
+    if (sentNotifications.notifications.isLoading) {
+        return <LoadScreen />
+    }
 
     return (
         <Box>
@@ -55,8 +59,6 @@ const Notifications = () => {
                             <TableCell align="right">Post ID</TableCell>
                             <TableCell align="right">Watch</TableCell>
                             <TableCell align="right">Word</TableCell>
-
-
                         </TableRow>
                     </TableHead>
                     <TableBody>

@@ -15,6 +15,7 @@ import Home from "./pages/Home";
 import Profile from "./pages/Profile";
 import PatreonAuthCb from "./pages/PatreonAuthCb";
 import Notifications from "./pages/Notifications";
+import About from "./pages/About";
 
 
 
@@ -62,6 +63,9 @@ function App() {
                                         <RequireAuth>
                                             <Profile />
                                         </RequireAuth>
+                                    } />
+                                    <Route path="/about" element={
+                                        <About />
                                     } />
 
 

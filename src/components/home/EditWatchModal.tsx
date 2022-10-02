@@ -22,6 +22,7 @@ import TriggerWords from "./TriggerWords";
 import {useSnackbar} from "notistack";
 import AuthConsumer from "../../hooks/useAuth";
 import {useNotificationSvc} from "../../hooks/useNotificationSvc";
+import {getNotificationSvcLogo} from "../../util/helpers";
 
 
 type CompProps = {
@@ -210,9 +211,9 @@ const EditWatchModal = ({isOpen, closeModal, watch, saveWatch, deleteWatch}: Com
                                 (svc: NotificationService) => (
                                     <>
                                     <ContainingBox sx={{mt: 2}} key={svc.id}>
-                                        <SubBox sx={{flexBasis: "50px"}}><NotificationsIcon /></SubBox>
-                                        <SubBox sx={{flexBasis: '100%'}}>{svc.name}</SubBox>
-                                        <SubBox sx={{flexBasis: "50px"}}><DeleteIcon onClick={() => removeNotificationSvc(svc.id)}/></SubBox>
+                                        <SubBox sx={{flexBasis: "15%"}}>{getNotificationSvcLogo(svc)}</SubBox>
+                                        <SubBox sx={{flexBasis: '70%', ml: 1}}>{svc.name}</SubBox>
+                                        <SubBox sx={{flexBasis: "15%"}}><DeleteIcon onClick={() => removeNotificationSvc(svc.id)}/></SubBox>
                                     </ContainingBox>
                                     </>
                                 )
@@ -224,9 +225,9 @@ const EditWatchModal = ({isOpen, closeModal, watch, saveWatch, deleteWatch}: Com
                             (svc: NotificationService) => (
                                 <>
                                     <ContainingBox sx={{mt: 2}}>
-                                        <SubBox sx={{flexBasis: "50px"}}><NotificationsOffIcon /></SubBox>
-                                        <SubBox sx={{flexBasis: '100%'}}>{svc.name}</SubBox>
-                                        <SubBox sx={{flexBasis: "50px"}}><AddIcon onClick={() => addNotificationSvc(svc.id)} /></SubBox>
+                                        <SubBox sx={{flexBasis: "15%"}}>{getNotificationSvcLogo(svc)}</SubBox>
+                                        <SubBox sx={{flexBasis: '80%', ml: 1}}>{svc.name}</SubBox>
+                                        <SubBox sx={{flexBasis: "10%"}}><AddIcon onClick={() => addNotificationSvc(svc.id)} /></SubBox>
                                     </ContainingBox>
                                 </>
                             )

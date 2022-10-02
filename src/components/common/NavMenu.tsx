@@ -4,6 +4,7 @@ import NotificationsIcon from '@mui/icons-material/Notifications';
 import OtherHousesIcon from '@mui/icons-material/OtherHouses';
 import NotificationsActiveIcon from '@mui/icons-material/NotificationsActive';
 import Person2Icon from '@mui/icons-material/Person2';
+import SmartToyIcon from '@mui/icons-material/SmartToy';
 
 type NavItem = {
     text: string,
@@ -35,6 +36,11 @@ const NavMenu = () => {
             text: "My Profile",
             path: "/profile",
             icon: <Person2Icon />
+        },
+        {
+            text: "About",
+            path: "/about",
+            icon: <SmartToyIcon />
         }
     ]
 

@@ -76,6 +76,9 @@ export function useAuth() {
 
     }, []);
 
+    useInterval(async () => {
+        await refreshAuth();
+    }, recheckDelay);
 
     useEffect(() => {
         refreshAuth();

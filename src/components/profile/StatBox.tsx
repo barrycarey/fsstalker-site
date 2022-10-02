@@ -1,4 +1,4 @@
-import {Box, Divider, Paper, styled, Typography} from "@mui/material";
+import {Box, Button, Divider, Paper, styled, Typography} from "@mui/material";
 
 type CompPromps = {
     title: string,
@@ -8,7 +8,7 @@ type CompPromps = {
 export const ContentBox = styled('div')({
     borderRadius: 1,
     maxWidth: '100%',
-    height: '85%',
+    height: '70%',
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'center',
@@ -29,6 +29,10 @@ export const TitleBox = styled('div')({
     fontSize: "1.7rem"
 })
 
+const upgradeOnClick = () => {
+    window.open('https://www.patreon.com/bstsleuth' ,'_blank')
+}
+
 const StatBox = ({title, content}: CompPromps) => {
 
     return (
@@ -41,6 +45,9 @@ const StatBox = ({title, content}: CompPromps) => {
                 <ContentBox>
                     {content}
                 </ContentBox>
+                <TitleBox sx={{pb:2}}>
+                    <Button variant="outlined"  color="success" onClick={upgradeOnClick}>Upgrade</Button>
+                </TitleBox>
             </Box>
         </Paper>
     )

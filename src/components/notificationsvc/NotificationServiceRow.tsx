@@ -1,9 +1,10 @@
 import {NotificationService} from "../../interfaces/common";
-import {Box, Grid, Paper, styled} from "@mui/material";
-import {useCallback} from "react";
+import {Avatar, Box, Grid, Paper, styled} from "@mui/material";
+import {useCallback, useEffect, useState} from "react";
 import DeleteIcon from '@mui/icons-material/Delete';
 import {RoundedRow, RoundedRowSections} from "../../util/styles";
 import {useSnackbar} from "notistack";
+import {logos} from "./serviceLogos";
 
 type CompProps = {
     notificationSvc: NotificationService,
@@ -16,6 +17,22 @@ type CompProps = {
 const NotificationServiceRow = ({notificationSvc, openEdit, deleteSvc}: CompProps) => {
 
     const { enqueueSnackbar } = useSnackbar();
+    const [logo, setLogo] = useState<any>(null);
+
+    const getLogo = () => {
+        let match = notificationSvc.url.match('.+(?=:\\/\\/)')
+        console.log(match)
+        if (match !== null) {
+            // @ts-ignore
+            let foundLogo = logos.find(l => l.name === match[0])
+            if (!foundLogo) {
+                return <Avatar>{notificationSvc.name[0]}</Avatar>
+            }
+            return <Avatar alt="Notify Logo" src={foundLogo.image} />
+        } else {
+            return <Avatar>{notificationSvc.name[0]}</Avatar>
+        }
+    }
 
     const boxOnClick = useCallback(() => {
         openEdit(notificationSvc);
@@ -32,7 +49,7 @@ const NotificationServiceRow = ({notificationSvc, openEdit, deleteSvc}: CompProp
     return (
 
             <RoundedRow>
-                <RoundedRowSections sx={{flexBasis: '50px'}} onClick={boxOnClick}>Icon</RoundedRowSections>
+                <RoundedRowSections sx={{flexBasis: '50px'}} onClick={boxOnClick}>{getLogo()}</RoundedRowSections>
                 <RoundedRowSections sx={{flexBasis: '100%'}} onClick={boxOnClick}>{notificationSvc.name}</RoundedRowSections>
                 <RoundedRowSections sx={{flexBasis: '50px'}}><DeleteIcon onClick={deleteOnClick} /></RoundedRowSections>
             </RoundedRow>
