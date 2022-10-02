@@ -43,9 +43,11 @@ export function useAuth() {
 
 
     const refreshAuth = useCallback(async () => {
+        console.log('useAuth:refreshAuth - Getting Reddit Data')
         let token = await localStorage.getItem('token');
         if (!token) {
-            console.log('No auth token available');
+            console.log('useAuth:refreshAuth - No auth token available');
+            setUserData(null);
             return;
         }
         let res;
@@ -55,24 +57,25 @@ export function useAuth() {
                 headers: { Authorization: `Bearer ${token}` }
             })
         } catch (err) {
-            setAuthError('Problem reaching authentication API');
+            setAuthError('useAuth:refreshAuth - Problem reaching authentication API');
             setIsLoading(false);
             return;
         }
 
         if (res.status !== 200) {
-            console.log(`Bad status from Auth API ${res.status}`);
+            console.log(`useAuth:refreshAuth - Bad status from Auth API ${res.status}`);
             setAuthError(`Bad status from Auth API ${res.status}`);
             setIsLoading(false);
             return;
         }
 
+        console.log('useAuth:refreshAuth - Setting auth user data')
         setUserData({username: res.data.name, avatar: res.data.icon_img.split('?')[0]})
         setIsLoading(false);
 
         setRecheckDelay(600000);
 
-        navigate('/')
+        //navigate('/')
 
     }, []);
 
@@ -85,6 +88,7 @@ export function useAuth() {
     }, [refreshAuth]);
 
     const signout = async () => {
+        console.log('Signing out')
         await window.localStorage.removeItem('token');
         setUserData(null);
     };

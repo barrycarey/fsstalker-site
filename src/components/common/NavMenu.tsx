@@ -5,6 +5,9 @@ import OtherHousesIcon from '@mui/icons-material/OtherHouses';
 import NotificationsActiveIcon from '@mui/icons-material/NotificationsActive';
 import Person2Icon from '@mui/icons-material/Person2';
 import SmartToyIcon from '@mui/icons-material/SmartToy';
+import AuthConsumer, {useAuth} from "../../hooks/useAuth";
+import LogoutIcon from '@mui/icons-material/Logout';
+import {useCallback} from "react";
 
 type NavItem = {
     text: string,
@@ -15,6 +18,7 @@ type NavItem = {
 const NavMenu = () => {
 
     let navigate = useNavigate();
+    const auth = useAuth();
 
     const navItems = [
         {
@@ -48,6 +52,12 @@ const NavMenu = () => {
         navigate(path);
     }
 
+    const logoutOnClick = useCallback(() => {
+        console.log(auth.userData)
+        auth.signout();
+        console.log(auth.userData)
+    }, [auth])
+
     return (
         <Box sx={{ p: 2, width: 300 }}>
             <Box sx={{ mt: 2, mb: 2 }}>
@@ -68,6 +78,14 @@ const NavMenu = () => {
                 )
 
                 }
+                <ListItem>
+                    <ListItemButton onClick={logoutOnClick}>
+                        <ListItemIcon>
+                            <LogoutIcon />
+                        </ListItemIcon>
+                        <ListItemText>Logout</ListItemText>
+                    </ListItemButton>
+                </ListItem>
 
             </List>
         </Box>
