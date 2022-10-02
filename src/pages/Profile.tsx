@@ -1,18 +1,18 @@
 import {Alert, AlertTitle, Box, Button, FormGroup, Grid, TextField, Typography} from "@mui/material";
 import {useCallback, useEffect, useState} from "react";
 import {useUser} from "../hooks/useUser";
-import AuthConsumer from "../hooks/useAuth";
 import LoadScreen from "../components/common/LoadScreen";
 import StatBox from "../components/profile/StatBox";
 import {useWatches} from "../hooks/useWatches";
 import {useNotificationSvc} from "../hooks/useNotificationSvc";
 import {RoundedRow, RoundedRowSections} from "../util/styles";
+import {useAuth} from "../util/auth";
 
 const Profile = () => {
-    const authCtx = AuthConsumer();
-    const userData = useUser(authCtx.userData?.username)
-    const watches = useWatches(authCtx.userData?.username);
-    const notificationServices = useNotificationSvc(authCtx.userData?.username);
+    const authCtx = useAuth();
+    const userData = useUser(authCtx?.userData)
+    const watches = useWatches(authCtx?.userData);
+    const notificationServices = useNotificationSvc(authCtx?.userData);
     const [overLimit, setOverLimit] = useState<boolean>(false);
 
     useEffect(() => {

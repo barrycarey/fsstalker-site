@@ -4,13 +4,13 @@ import NotificationServiceRow from "../components/notificationsvc/NotificationSe
 import {useCallback, useState} from "react";
 import NotificationSvcEditModal from "../components/notificationsvc/NotificationSvcEditModal";
 import {RoundedRow} from "../util/styles";
-import AuthConsumer from "../hooks/useAuth";
 import {useNotificationSvc} from "../hooks/useNotificationSvc";
+import { useAuth } from "../util/auth";
 
 const NotificationServices = () => {
 
-    const authCtx = AuthConsumer();
-    const notificationServices = useNotificationSvc(authCtx.userData?.username);
+    const authCtx = useAuth();
+    const notificationServices = useNotificationSvc(authCtx?.userData);
 
     const [editOpen, setEditOpen] = useState<boolean>(false);
     const [selectedSvc, setSelectedSvc] = useState<NotificationService | null>(null);

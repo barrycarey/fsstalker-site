@@ -14,15 +14,13 @@ import {
 } from "@mui/material";
 import {NotificationService, Watch} from "../../interfaces/common";
 import {useCallback, useEffect, useState} from "react";
-import NotificationsIcon from '@mui/icons-material/Notifications';
-import NotificationsOffIcon from '@mui/icons-material/NotificationsOff';
 import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
 import TriggerWords from "./TriggerWords";
 import {useSnackbar} from "notistack";
-import AuthConsumer from "../../hooks/useAuth";
 import {useNotificationSvc} from "../../hooks/useNotificationSvc";
 import {getNotificationSvcLogo} from "../../util/helpers";
+import {useAuth} from "../../util/auth";
 
 
 type CompProps = {
@@ -70,8 +68,8 @@ const SubBox = styled('div')({
 })
 
 const EditWatchModal = ({isOpen, closeModal, watch, saveWatch, deleteWatch}: CompProps) => {
-    const authCtx = AuthConsumer();
-    const notificationServices = useNotificationSvc(authCtx.userData?.username);
+    const authCtx = useAuth();
+    const notificationServices = useNotificationSvc(authCtx?.userData);
     const [selectedWatch, setSelectedWatch] = useState<Watch>({...newWatch});
     const { enqueueSnackbar } = useSnackbar();
     const [availableNotificationSvc, setAvailableNotificationSvc] = useState<NotificationService[]>([]);

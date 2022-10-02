@@ -51,5 +51,10 @@ export type SentNotificationTableRow = {
     triggered_word: string;
     submission_created_at: Date;
     subreddit: string;
-
 }
+
+export type RedditUserData = {
+    username: string;
+    avatar: string | null;
+    authToken: string | null;
+};

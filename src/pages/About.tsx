@@ -1,4 +1,5 @@
 import {Box, Divider, Typography} from "@mui/material";
+import {useEffect} from "react";
 
 const About = () => {
 
