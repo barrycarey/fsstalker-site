@@ -1,4 +1,3 @@
-import AuthConsumer, {useAuth} from "../hooks/useAuth";
 import {Box, CircularProgress, Grid, Typography} from "@mui/material";
 import {useCallback, useState} from "react";
 import {Watch} from "../interfaces/common";
@@ -7,15 +6,14 @@ import {RoundedRow} from "../util/styles";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import MonitorPreview from "../components/home/MonitorPreview";
 import EditWatchModal from "../components/home/EditWatchModal";
-import {useUser} from "../hooks/useUser";
+import {useAuth} from "../util/auth";
 
 const Home = () => {
     const [watchEditIsOpen, setWatchEditIsOpen] = useState<boolean>(false);
     const [selectedWatch, setSelectedWatch] = useState<Watch | null>(null);
-    const authCtx = AuthConsumer();
+    const authCtx = useAuth();
 
-    const watches = useWatches(authCtx.userData?.username);
-    const userData = useUser(authCtx.userData?.username)
+    const watches = useWatches(authCtx?.userData);
 
     const closeEditModal = useCallback(() => {
         setSelectedWatch(null);

@@ -1,19 +1,19 @@
 import {useMutation, useQuery, useQueryClient} from "react-query";
 import axios from "axios";
 import {useSnackbar} from "notistack";
-import {NotificationService} from "../interfaces/common";
+import {NotificationService, RedditUserData} from "../interfaces/common";
 
-export function useNotificationSvc(username: string | undefined) {
+export function useNotificationSvc(userData: RedditUserData | null) {
     const queryClient = useQueryClient();
     const { enqueueSnackbar, closeSnackbar } = useSnackbar();
 
     const services = useQuery(['notificationServices'], async () => {
-        const {data} = await axios.get(`${process.env.REACT_APP_STALKER_API}/notification-svc/${username}?token=${localStorage.getItem('token')}`);
+        const {data} = await axios.get(`${process.env.REACT_APP_STALKER_API}/notification-svc/${userData?.username}?token=${userData?.authToken}`);
         return data;
     });
 
     const updateSvc = useMutation(
-        (newSvc: NotificationService) => axios.post(`${process.env.REACT_APP_STALKER_API}/notification-svc?token=${localStorage.getItem('token')}`, newSvc),
+        (newSvc: NotificationService) => axios.post(`${process.env.REACT_APP_STALKER_API}/notification-svc?token=${userData?.authToken}`, newSvc),
         {
             onSuccess: () => {
                 // ✅ refetch the comments list for our blog post
@@ -27,7 +27,7 @@ export function useNotificationSvc(username: string | undefined) {
     )
 
     const deleteSVc = useMutation(
-        (id: number) => axios.delete(`${process.env.REACT_APP_STALKER_API}/notification-svc/${id}?token=${localStorage.getItem('token')}`),
+        (id: number) => axios.delete(`${process.env.REACT_APP_STALKER_API}/notification-svc/${id}?token=${userData?.authToken}`),
         {
             onSuccess: () => {
                 // ✅ refetch the comments list for our blog post

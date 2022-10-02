@@ -5,9 +5,10 @@ import OtherHousesIcon from '@mui/icons-material/OtherHouses';
 import NotificationsActiveIcon from '@mui/icons-material/NotificationsActive';
 import Person2Icon from '@mui/icons-material/Person2';
 import SmartToyIcon from '@mui/icons-material/SmartToy';
-import AuthConsumer, {useAuth} from "../../hooks/useAuth";
+
 import LogoutIcon from '@mui/icons-material/Logout';
 import {useCallback} from "react";
+import {useAuth} from "../../util/auth";
 
 type NavItem = {
     text: string,
@@ -54,7 +55,7 @@ const NavMenu = () => {
 
     const logoutOnClick = useCallback(() => {
         console.log(auth.userData)
-        auth.signout();
+        auth.logout();
         console.log(auth.userData)
     }, [auth])
 

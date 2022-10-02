@@ -1,10 +1,9 @@
-import AuthConsumer from "../hooks/useAuth";
 import {useSentNotifications} from "../hooks/useSentNotifications";
-import {useCallback, useEffect, useState} from "react";
+import {useEffect, useState} from "react";
 import {SentNotification, SentNotificationTableRow, Watch} from "../interfaces/common";
-import {Avatar, Box, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow} from "@mui/material";
-import axios from "axios";
+import {Box, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow} from "@mui/material";
 import LoadScreen from "../components/common/LoadScreen";
+import {useAuth} from "../util/auth";
 
 type SubredditIcon = {
     subreddit: string,
@@ -12,8 +11,8 @@ type SubredditIcon = {
 }
 
 const Notifications = () => {
-    const authCtx = AuthConsumer();
-    const sentNotifications = useSentNotifications(authCtx.userData?.username);
+    const authCtx = useAuth();
+    const sentNotifications = useSentNotifications(authCtx?.userData);
     const [sortedNotifications, setSortedNotifications] = useState<SentNotificationTableRow[]>([]);
     const [subredditIcons, setSubredditIcons] = useState<SubredditIcon[]>([]);
 

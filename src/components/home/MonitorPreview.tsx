@@ -2,6 +2,7 @@ import {Button, Card, CardActionArea, CardActions, CardContent, CardMedia, Grid,
 import {Watch} from "../../interfaces/common";
 import {useCallback, useEffect, useState} from "react";
 import axios from "axios";
+import {useAuth} from "../../util/auth";
 
 type CompProps = {
     watch: Watch
@@ -9,22 +10,23 @@ type CompProps = {
 }
 
 const MonitorPreview = ({watch, onSelect}: CompProps) => {
-
+    const auth = useAuth();
     const [bannerImg, setBannerImg] = useState<string>();
 
     useEffect(() => {
+        console.log(`MonitorPreview:useEffect - Requesting subreddit banner - ${auth.userData?.authToken}`)
         axios.get(`https://oauth.reddit.com/r/${watch.subreddit}/about`, {
-            headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+            headers: { Authorization: `Bearer ${auth.userData?.authToken}` }
         })
             .then((res) => {
                 if (res.status !== 200) {
-                    console.log('Bad status from Reddit')
+                    console.log('MonitorPreview:useEffect - Bad status code from Reddit')
                     return;
                 }
                 setBannerImg(res.data.data.banner_background_image.split('?')[0])
             })
             .catch((error) => {
-                console.log(`Failed to get banner for ${watch.subreddit}`)
+                console.log(`MonitorPreview:useEffect - Failed to get banner for ${watch.subreddit}`)
             })
 
     }, [bannerImg])

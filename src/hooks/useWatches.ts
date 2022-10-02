@@ -1,20 +1,22 @@
 import {useMutation, useQuery, useQueryClient} from "react-query";
 import {useSnackbar} from "notistack";
 import axios, {AxiosError} from "axios";
-import {Watch} from "../interfaces/common";
+import {RedditUserData, Watch} from "../interfaces/common";
 
 
-export function useWatches(username: string | undefined) {
+export function useWatches(userData: RedditUserData | null) {
     const queryClient = useQueryClient();
     const { enqueueSnackbar } = useSnackbar();
 
+    console.log(`useWatches: init - Username: ${userData?.username}`)
+
     const watches = useQuery<Watch[], Error>(['watches'], async () => {
-        const {data} = await axios.get(`${process.env.REACT_APP_STALKER_API}/watch/${username}?token=${localStorage.getItem('token')}`);
+        const {data} = await axios.get(`${process.env.REACT_APP_STALKER_API}/watch/${userData?.username}?token=${userData?.authToken}`);
         return data;
     });
 
     const create = useMutation(
-        (newWatch: Watch) => axios.post(`${process.env.REACT_APP_STALKER_API}/watch?token=${localStorage.getItem('token')}`, newWatch),
+        (newWatch: Watch) => axios.post(`${process.env.REACT_APP_STALKER_API}/watch?token=${userData?.authToken}`, newWatch),
         {
             onSuccess: () => {
                 queryClient.invalidateQueries(['watches'])
@@ -28,7 +30,7 @@ export function useWatches(username: string | undefined) {
     )
 
     const update = useMutation(
-        (newWatch: Watch) => axios.patch(`${process.env.REACT_APP_STALKER_API}/watch?token=${localStorage.getItem('token')}`, newWatch),
+        (newWatch: Watch) => axios.patch(`${process.env.REACT_APP_STALKER_API}/watch?token=${userData?.authToken}`, newWatch),
         {
             onSuccess: () => {
                 queryClient.invalidateQueries(['watches']);
@@ -42,7 +44,7 @@ export function useWatches(username: string | undefined) {
     )
 
     const deleteWatch = useMutation(
-        (id: number) => axios.delete(`${process.env.REACT_APP_STALKER_API}/watch/${id}?token=${localStorage.getItem('token')}`),
+        (id: number) => axios.delete(`${process.env.REACT_APP_STALKER_API}/watch/${id}?token=${userData?.authToken}`),
         {
             onSuccess: () => {
                 queryClient.invalidateQueries(['watches']);
