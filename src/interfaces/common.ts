@@ -64,6 +64,6 @@ export type SentNotificationTableRow = {
 
 export type RedditUserData = {
     username: string;
-    avatar: string | null;
+    avatar: string | undefined;
     authToken: string | null;
 };

@@ -1,6 +1,6 @@
 import {useMutation, useQuery, useQueryClient} from "react-query";
 import axios from "axios";
-import {NotificationService, RedditUserData, User} from "../interfaces/common";
+import {NotificationService, RedditUserData, User, UserNotification} from "../interfaces/common";
 import {useSnackbar} from "notistack";
 
 
@@ -10,6 +10,11 @@ export function useUser(userData: RedditUserData | null) {
 
     const user = useQuery<User, Error>(['userData'], async () => {
         const {data} = await axios.get(`${process.env.REACT_APP_STALKER_API}/user/${userData?.username}?token=${userData?.authToken}`);
+        return data;
+    });
+
+    const unreadNotifications = useQuery<UserNotification[], Error>(['userNotifications'], async () => {
+        const {data} = await axios.get(`${process.env.REACT_APP_STALKER_API}/user-notifications/${userData?.username}?token=${userData?.authToken}&unread=true`);
         return data;
     });
 
@@ -27,6 +32,7 @@ export function useUser(userData: RedditUserData | null) {
 
     return {
         user,
-        create
+        create,
+        unreadNotifications
     }
 }
