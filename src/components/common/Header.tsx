@@ -1,4 +1,4 @@
-import {AppBar, Box, Button, IconButton, Toolbar, Typography} from "@mui/material";
+import {AppBar, Avatar, Box, Button, Container, IconButton, Toolbar, Typography} from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import React from "react";
 
@@ -27,6 +27,7 @@ const Header = ({openMenu}: HeaderPropers) => {
                     </Typography>
                 </Toolbar>
             </AppBar>
+
         </Box>
     )
 }

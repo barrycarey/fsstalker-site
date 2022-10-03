@@ -16,9 +16,10 @@ const ContainingBox = styled('div')({
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'left',
-    padding: 6,
+    padding: 2,
     alignItems: 'center',
     verticalAlign: 'middle',
+    minHeight: "50px"
 })
 
 const TriggerWords = ({triggerWords, updateTriggerWords, greenChip, title}: CompPromps) => {
@@ -35,8 +36,6 @@ const TriggerWords = ({triggerWords, updateTriggerWords, greenChip, title}: Comp
     },[triggerWords])
 
     const onKeyUp = useCallback((event: any) => {
-        console.log("Key Press")
-        console.log(event);
         if (event.key === 'Enter') {
             setTriggerList(prevValue => {
                 const updatedList = [...prevValue, triggerTxtValue];
@@ -49,18 +48,16 @@ const TriggerWords = ({triggerWords, updateTriggerWords, greenChip, title}: Comp
     }, [triggerTxtValue, triggerList])
 
     const triggerWordDelete = useCallback((idx: number) => {
-        //setTriggerList((items) => items.filter((_, index) => index !== idx));
         setTriggerList(prevState => {
             const updatedList = prevState.filter((_, index) => index !== idx)
             updateTriggerWords(updatedList.join(","));
             return updatedList;
         });
-        //updateTriggerWords(triggerList.join(","));
     }, [triggerList])
 
     return (
         <Box sx={{mt: 3}}>
-            <Typography variant={"h6"} sx={{fontSize: 18}}>{title}</Typography>
+            <Typography variant={"h6"} sx={{fontSize: 18}}>{title}:</Typography>
             <ContainingBox>
                 <Grid container spacing={0}>
                     {triggerList.map((i: string, idx: number) => (
@@ -75,7 +72,7 @@ const TriggerWords = ({triggerWords, updateTriggerWords, greenChip, title}: Comp
                 sx={{mt: 1}}
                 id="outlined-basic"
                 fullWidth
-                label="Enter Words"
+                label={`Enter ${title}`}
                 variant="standard"
                 value={triggerTxtValue}
                 onChange={(e: any) => setTriggerTxtValue(e.target.value)}

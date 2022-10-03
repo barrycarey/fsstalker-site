@@ -204,14 +204,15 @@ const EditWatchModal = ({isOpen, closeModal, watch, saveWatch, deleteWatch}: Com
 
                     </Box>
                     <Box sx={{mt: 2}}>
+
                         <Typography variant={"h6"}>Active Notification Services</Typography>
                             {selectedWatch.notification_services.map(
                                 (svc: NotificationService) => (
                                     <>
-                                    <ContainingBox sx={{mt: 2}} key={svc.id}>
+                                    <ContainingBox sx={{mt: 2, borderBottom: "1px solid green"}} key={svc.id}>
                                         <SubBox sx={{flexBasis: "15%"}}>{getNotificationSvcLogo(svc)}</SubBox>
-                                        <SubBox sx={{flexBasis: '70%', ml: 1}}>{svc.name}</SubBox>
-                                        <SubBox sx={{flexBasis: "15%"}}><DeleteIcon onClick={() => removeNotificationSvc(svc.id)}/></SubBox>
+                                        <SubBox sx={{flexBasis: '80%', ml: 1}}>{svc.name}</SubBox>
+                                        <SubBox sx={{flexBasis: "10%"}}><DeleteIcon onClick={() => removeNotificationSvc(svc.id)}/></SubBox>
                                     </ContainingBox>
                                     </>
                                 )
@@ -222,7 +223,7 @@ const EditWatchModal = ({isOpen, closeModal, watch, saveWatch, deleteWatch}: Com
                         {availableNotificationSvc.map(
                             (svc: NotificationService) => (
                                 <>
-                                    <ContainingBox sx={{mt: 2}}>
+                                    <ContainingBox sx={{mt: 2, borderBottom: "1px solid red"}}>
                                         <SubBox sx={{flexBasis: "15%"}}>{getNotificationSvcLogo(svc)}</SubBox>
                                         <SubBox sx={{flexBasis: '80%', ml: 1}}>{svc.name}</SubBox>
                                         <SubBox sx={{flexBasis: "10%"}}><AddIcon onClick={() => addNotificationSvc(svc.id)} /></SubBox>

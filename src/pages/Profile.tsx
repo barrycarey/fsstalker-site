@@ -32,7 +32,7 @@ const Profile = () => {
     }, [watches.watches.data, notificationServices.services.data, userData])
 
     const openPatreonAuth = useCallback(() => {
-        let authUrl = `https://www.patreon.com/oauth2/authorize?response_type=code&redirect_uri=${process.env.REACT_APP_PATREON_REDIRECT_URL}&client_id=${process.env.REACT_APP_PATREON_CLIENT_ID}&state=${localStorage.getItem('token')}`
+        let authUrl = `https://www.patreon.com/oauth2/authorize?response_type=code&redirect_uri=${process.env.REACT_APP_PATREON_REDIRECT_URL}&client_id=${process.env.REACT_APP_PATREON_CLIENT_ID}&state=${authCtx.userData?.authToken}`
         console.log(authUrl)
         window.open(authUrl, '_blank')
     }, [])

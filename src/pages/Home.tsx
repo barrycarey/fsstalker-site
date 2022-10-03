@@ -1,4 +1,4 @@
-import {Box, CircularProgress, Grid, Typography} from "@mui/material";
+import {Alert, AlertTitle, Box, CircularProgress, Grid, Typography} from "@mui/material";
 import {useCallback, useState} from "react";
 import {Watch} from "../interfaces/common";
 import {useWatches} from "../hooks/useWatches";
@@ -50,6 +50,13 @@ const Home = () => {
     if (watches.watches.data) {
         return (
             <Box>
+                <Box>
+                    {watches.watches.data.length === 0 &&
+                        <Alert severity="info">
+                            Looks like you're new! — <strong>Click the + below to create your first watcher</strong>
+                        </Alert>
+                    }
+                </Box>
                 <RoundedRow onClick={addOnClick} sx={{mt: 2, justifyContent: "center"}}><AddCircleIcon sx={{color: "green", fontSize: "2rem"}} /></RoundedRow>
                 <Grid container spacing={2} sx={{mt: 1}}>
                     {watches.watches.data.map(

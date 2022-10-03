@@ -31,9 +31,13 @@ const MonitorPreview = ({watch, onSelect}: CompProps) => {
 
     }, [bannerImg])
 
+    const getBottomBorder = useCallback(() => {
+        return watch.active ? "3px solid green" : "3px solid red";
+    }, [watch])
+
     return (
 
-            <Card>
+            <Card sx={{borderBottom: getBottomBorder()}}>
                 <CardActionArea onClick={() => onSelect(watch)}>
                 {bannerImg != null &&
                     <CardMedia

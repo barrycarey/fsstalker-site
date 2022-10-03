@@ -29,8 +29,9 @@ export type User = {
     created_at: string,
     is_mod: boolean,
     patreon_tier_id: number,
-    patreon_id: string
-    patreon_tier: PatreonTier
+    patreon_id: string,
+    patreon_tier: PatreonTier,
+    user_notifications: UserNotification[]
 
 }
 
@@ -41,6 +42,14 @@ export type SentNotification = {
     watch_id: number;
     triggered_word: string;
     submission_created_at: string
+}
+
+export type UserNotification = {
+    id: number;
+    created_at: string;
+    read: boolean;
+    owner_id: number;
+    message: string
 }
 
 export type SentNotificationTableRow = {

@@ -16,7 +16,6 @@ export function useNotificationSvc(userData: RedditUserData | null) {
         (newSvc: NotificationService) => axios.post(`${process.env.REACT_APP_STALKER_API}/notification-svc?token=${userData?.authToken}`, newSvc),
         {
             onSuccess: () => {
-                // ✅ refetch the comments list for our blog post
                 queryClient.invalidateQueries(['notificationServices'])
                 enqueueSnackbar('Notification Service Saved', {variant: 'success'})
             },

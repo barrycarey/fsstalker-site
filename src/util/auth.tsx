@@ -28,6 +28,7 @@ export const AuthProvider = ({children}: {children: ReactNode} )=> {
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [redditToken, setRedditToken] = useState<string | null>(null);
 
+
     useEffect(() => {
         console.log('AuthProvider: useEffect: Checking for token in storage')
         let token = localStorage.getItem('redditToken');
@@ -70,6 +71,13 @@ export const AuthProvider = ({children}: {children: ReactNode} )=> {
             console.log('AuthProvider:useEffect - Setting auth user data')
             setUserData({username: res.data.name, avatar: res.data.icon_img.split('?')[0], authToken: redditToken})
             setIsLoading(false);
+            try {
+                await axios.post(`${process.env.REACT_APP_STALKER_API}/user?token=${redditToken}`)
+            } catch (err) {
+                console.log('AuthProvider:useEffect failed to create user, it already exists')
+            }
+
+
 
         }
 
