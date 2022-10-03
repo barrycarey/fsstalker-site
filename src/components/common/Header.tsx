@@ -1,9 +1,10 @@
 import {AppBar, Avatar, Badge, Box, Button, Container, IconButton, Toolbar, Typography} from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
-import React, {useCallback} from "react";
+import React, {useCallback, useState} from "react";
 import {useAuth} from "../../util/auth";
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import {useUser} from "../../hooks/useUser";
+import {NotificationDrawer} from "./NotificationDrawer";
 
 type HeaderPropers = {
     openMenu: () => void
@@ -13,6 +14,7 @@ const Header = ({openMenu}: HeaderPropers) => {
 
     const auth = useAuth();
     const userData = useUser(auth.userData);
+    const [drawerOpen, setDrawerOpen] = useState<boolean>(false);
 
     const getUnreadNotificationCount = useCallback(() => {
         if (userData.unreadNotifications.data) {
@@ -56,6 +58,7 @@ const Header = ({openMenu}: HeaderPropers) => {
                                 aria-label="New notifications"
                                 color="inherit"
                                 sx={{mr: 2}}
+                                onClick={() => setDrawerOpen(true)}
                             >
                                 <Badge badgeContent={getUnreadNotificationCount()} color="error">
                                     <NotificationsIcon />
@@ -68,7 +71,7 @@ const Header = ({openMenu}: HeaderPropers) => {
                     </Toolbar>
                 </Box>
             </AppBar>
-
+            <NotificationDrawer isOpen={drawerOpen} closeDrawer={() => setDrawerOpen(false)}/>
         </Box>
     )
 }
