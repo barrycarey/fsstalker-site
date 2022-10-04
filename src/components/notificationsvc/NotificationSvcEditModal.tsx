@@ -46,7 +46,7 @@ const NotificationSvcEditModal = ({open, serviceToEdit, saveNotificationSvc, clo
                 <DialogTitle>Edit Notification Service</DialogTitle>
                 <DialogContent>
                     <DialogContentText>
-                        We use AppRise for notifications.  Please use their URL structure found at https://github.com/caronc/apprise
+                        We use AppRise for notifications.  Please use their URL structure <a href="https://github.com/caronc/apprise#productivity-based-notifications" target="_blank">found here</a>
                     </DialogContentText>
                     <TextField
                         autoFocus

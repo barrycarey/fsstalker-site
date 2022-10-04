@@ -18,6 +18,7 @@ import Notifications from "./pages/Notifications";
 import About from "./pages/About";
 import { AuthProvider } from './util/auth';
 import {RequireAuthNew} from "./components/common/RequireAuthNew";
+import {GettingStarted} from "./pages/GettingStarted";
 
 
 
@@ -69,6 +70,9 @@ function App() {
                                     } />
                                     <Route path="/about" element={
                                         <About />
+                                    } />
+                                    <Route path="/getting-started" element={
+                                        <GettingStarted />
                                     } />
 
 

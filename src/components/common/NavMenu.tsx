@@ -9,6 +9,7 @@ import SmartToyIcon from '@mui/icons-material/SmartToy';
 import LogoutIcon from '@mui/icons-material/Logout';
 import {useCallback} from "react";
 import {useAuth} from "../../util/auth";
+import HelpCenterIcon from '@mui/icons-material/HelpCenter';
 
 type NavItem = {
     text: string,
@@ -46,6 +47,11 @@ const NavMenu = () => {
             text: "About",
             path: "/about",
             icon: <SmartToyIcon />
+        },
+        {
+            text: "Getting Started",
+            path: "/getting-started",
+            icon: <HelpCenterIcon />
         }
     ]
 

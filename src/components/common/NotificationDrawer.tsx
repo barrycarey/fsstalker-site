@@ -37,6 +37,20 @@ export const NotificationDrawer = ({isOpen, closeDrawer}: CompProps) => {
         }
     }, [notificationList])
 
+    const markNotificationReadNew = useCallback((id: number) => {
+        let selectedNotificationIdx = notificationList.findIndex(n => n.id === id);
+        if (selectedNotificationIdx !== -1) {
+            notificationList[selectedNotificationIdx].read = true;
+            userData.markNotificationRead.mutate(notificationList[selectedNotificationIdx]);
+            setNotificationList(prevState => {
+                let newList = [...prevState];
+                newList.splice(selectedNotificationIdx, 1);
+                console.log(newList)
+                return newList;
+            })
+        }
+    }, [notificationList])
+
     const NotificationRow = styled('div')({
         borderRadius: 2,
         maxWidth: '100%',
@@ -61,10 +75,6 @@ export const NotificationDrawer = ({isOpen, closeDrawer}: CompProps) => {
         display: 'inline-flex',
     })
 
-    if (userData.unreadNotifications.isLoading) {
-        return <LoadScreen />
-    }
-
     return (
         <Drawer
             anchor="right"
@@ -80,7 +90,7 @@ export const NotificationDrawer = ({isOpen, closeDrawer}: CompProps) => {
                 {notificationList.map(n => (
                     <NotificationRow>
                         <NotificationRowSection sx={{width: "12%", justifyContent: "center"}}>
-                            <NotificationsIcon onClick={() => {markNotificationRead(n.id)}}/>
+                            <NotificationsIcon onClick={() => {markNotificationReadNew(n.id)}}/>
                         </NotificationRowSection>
                         <NotificationRowSection sx={{width: "88%"}}>
                             {n.message}
