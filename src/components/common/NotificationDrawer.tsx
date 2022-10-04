@@ -1,9 +1,10 @@
-import {Box, Drawer, styled} from "@mui/material";
+import {Box, Button, Divider, Drawer, styled, Typography} from "@mui/material";
 import {UserNotification, Watch} from "../../interfaces/common";
 import {useAuth} from "../../util/auth";
 import {useUser} from "../../hooks/useUser";
 import LoadScreen from "./LoadScreen";
-import {useEffect, useState} from "react";
+import {useCallback, useEffect, useState} from "react";
+import NotificationsIcon from '@mui/icons-material/Notifications';
 
 type CompProps = {
     isOpen: boolean
@@ -16,6 +17,7 @@ export const NotificationDrawer = ({isOpen, closeDrawer}: CompProps) => {
     const [notificationList, setNotificationList] = useState<UserNotification[]>([]);
 
     useEffect(() => {
+        console.log('NotificationDrawer:useEffect - Updating notificaiton list')
         if (userData.unreadNotifications.data) {
             let unread: UserNotification[] = [];
             userData.unreadNotifications.data.forEach((notification: UserNotification) => {
@@ -27,11 +29,18 @@ export const NotificationDrawer = ({isOpen, closeDrawer}: CompProps) => {
         }
     }, [userData.unreadNotifications.data])
 
+    const markNotificationRead = useCallback((id: number) => {
+        let selectedNotification = notificationList.find(n => n.id === id);
+        if (selectedNotification) {
+            selectedNotification.read = true;
+            userData.markNotificationRead.mutate(selectedNotification);
+        }
+    }, [notificationList])
 
     const NotificationRow = styled('div')({
         borderRadius: 2,
         maxWidth: '100%',
-        height: '55px',
+        maxHeight: '100px',
         background: '#3d3d3d',
         display: 'flex',
         flexDirection: 'row',
@@ -40,6 +49,16 @@ export const NotificationDrawer = ({isOpen, closeDrawer}: CompProps) => {
         alignItems: 'center',
         marginBottom: 10,
         verticalAlign: 'middle',
+    })
+
+    const NotificationRowSection = styled('div')({
+        height: '100%',
+        justifyContent: 'left',
+        borderStyle: 'solid',
+        borderWidth: 0,
+        overflow: 'hidden',
+        alignItems: 'center',
+        display: 'inline-flex',
     })
 
     if (userData.unreadNotifications.isLoading) {
@@ -53,7 +72,21 @@ export const NotificationDrawer = ({isOpen, closeDrawer}: CompProps) => {
             onClose={() => closeDrawer()}
         >
             <Box sx={{width: "350px"}}>
-
+                <Box><Typography variant={"h5"} sx={{textAlign: "center", width: "100%"}}>Notifications</Typography> </Box>
+                <Box sx={{width: "100%", mb: 2, mt: 1, justifyContent: "center"}}>
+                    <Button variant="contained" color="info" size="small">Mark All Read</Button>
+                </Box>
+                <Divider sx={{ mb: 2}}/>
+                {notificationList.map(n => (
+                    <NotificationRow>
+                        <NotificationRowSection sx={{width: "12%", justifyContent: "center"}}>
+                            <NotificationsIcon onClick={() => {markNotificationRead(n.id)}}/>
+                        </NotificationRowSection>
+                        <NotificationRowSection sx={{width: "88%"}}>
+                            {n.message}
+                        </NotificationRowSection>
+                    </NotificationRow>
+                ))}
             </Box>
         </Drawer>
     )
