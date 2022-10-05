@@ -10,6 +10,7 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import {useCallback} from "react";
 import {useAuth} from "../../util/auth";
 import HelpCenterIcon from '@mui/icons-material/HelpCenter';
+import {useQueryClient} from "react-query";
 
 type NavItem = {
     text: string,
@@ -21,6 +22,8 @@ const NavMenu = () => {
 
     let navigate = useNavigate();
     const auth = useAuth();
+    const queryClient = useQueryClient();
+
 
     const navItems = [
         {
@@ -59,10 +62,14 @@ const NavMenu = () => {
         navigate(path);
     }
 
-    const logoutOnClick = useCallback(() => {
-        console.log(auth.userData)
-        auth.logout();
-        console.log(auth.userData)
+    const loginLogoutOnClick = useCallback(() => {
+        if (auth.userData) {
+            queryClient.removeQueries(['UserNotification'])
+            auth.logout();
+        } else {
+            navigate('/login')
+        }
+
     }, [auth])
 
     return (
@@ -86,11 +93,11 @@ const NavMenu = () => {
 
                 }
                 <ListItem>
-                    <ListItemButton onClick={logoutOnClick}>
+                    <ListItemButton onClick={loginLogoutOnClick}>
                         <ListItemIcon>
                             <LogoutIcon />
                         </ListItemIcon>
-                        <ListItemText>Logout</ListItemText>
+                        <ListItemText>{auth.userData ? "Logout" : "Login"}</ListItemText>
                     </ListItemButton>
                 </ListItem>
 

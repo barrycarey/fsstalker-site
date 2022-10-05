@@ -34,7 +34,7 @@ export function useUser(userData: RedditUserData | null) {
         (notification: UserNotification) => axios.patch(`${process.env.REACT_APP_STALKER_API}/user-notifications?token=${userData?.authToken}`, notification),
         {
             onSuccess: () => {
-                queryClient.invalidateQueries(['UserNotification'])
+                queryClient.invalidateQueries(['userNotifications'])
             },
             onError: (error, variables, context) => {
                 enqueueSnackbar(`'Failed to mark notification as read: ${error}`, {variant: 'error'})

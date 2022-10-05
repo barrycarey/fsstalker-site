@@ -5,6 +5,8 @@ import {useUser} from "../../hooks/useUser";
 import LoadScreen from "./LoadScreen";
 import {useCallback, useEffect, useState} from "react";
 import NotificationsIcon from '@mui/icons-material/Notifications';
+import CloseIcon from '@mui/icons-material/Close';
+import {useQueryClient} from "react-query";
 
 type CompProps = {
     isOpen: boolean
@@ -15,6 +17,7 @@ export const NotificationDrawer = ({isOpen, closeDrawer}: CompProps) => {
     const auth = useAuth();
     const userData = useUser(auth?.userData);
     const [notificationList, setNotificationList] = useState<UserNotification[]>([]);
+
 
     useEffect(() => {
         console.log('NotificationDrawer:useEffect - Updating notificaiton list')
@@ -35,6 +38,13 @@ export const NotificationDrawer = ({isOpen, closeDrawer}: CompProps) => {
             selectedNotification.read = true;
             userData.markNotificationRead.mutate(selectedNotification);
         }
+    }, [notificationList])
+
+    const markAllAsRead = useCallback(() => {
+        notificationList.forEach((n) => {
+            n.read = true;
+            userData.markNotificationRead.mutate(n);
+        })
     }, [notificationList])
 
     const markNotificationReadNew = useCallback((id: number) => {
@@ -84,16 +94,20 @@ export const NotificationDrawer = ({isOpen, closeDrawer}: CompProps) => {
             <Box sx={{width: "350px"}}>
                 <Box><Typography variant={"h5"} sx={{textAlign: "center", width: "100%"}}>Notifications</Typography> </Box>
                 <Box sx={{width: "100%", mb: 2, mt: 1, justifyContent: "center"}}>
-                    <Button variant="contained" color="info" size="small">Mark All Read</Button>
+                    <Button variant="text" color="info" size="small" onClick={markAllAsRead}>Mark All Read</Button>
+                    <Button variant="text" color="info" size="small" onClick={() => closeDrawer()}>Close</Button>
                 </Box>
                 <Divider sx={{ mb: 2}}/>
                 {notificationList.map(n => (
                     <NotificationRow>
                         <NotificationRowSection sx={{width: "12%", justifyContent: "center"}}>
-                            <NotificationsIcon onClick={() => {markNotificationReadNew(n.id)}}/>
+                            <NotificationsIcon />
                         </NotificationRowSection>
-                        <NotificationRowSection sx={{width: "88%"}}>
+                        <NotificationRowSection sx={{width: "80%"}}>
                             {n.message}
+                        </NotificationRowSection>
+                        <NotificationRowSection sx={{width: "8%"}}>
+                            <CloseIcon onClick={() => {markNotificationReadNew(n.id)}}/>
                         </NotificationRowSection>
                     </NotificationRow>
                 ))}
