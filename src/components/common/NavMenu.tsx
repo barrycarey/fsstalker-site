@@ -11,6 +11,7 @@ import {useCallback} from "react";
 import {useAuth} from "../../util/auth";
 import HelpCenterIcon from '@mui/icons-material/HelpCenter';
 import {useQueryClient} from "react-query";
+import BugReportIcon from '@mui/icons-material/BugReport';
 
 type NavItem = {
     text: string,
@@ -55,7 +56,8 @@ const NavMenu = () => {
             text: "Getting Started",
             path: "/getting-started",
             icon: <HelpCenterIcon />
-        }
+        },
+
     ]
 
     const onLinkClick = (path: string) => {
@@ -64,7 +66,7 @@ const NavMenu = () => {
 
     const loginLogoutOnClick = useCallback(() => {
         if (auth.userData) {
-            queryClient.removeQueries(['UserNotification'])
+            queryClient.removeQueries(['userNotifications'])
             auth.logout();
         } else {
             navigate('/login')
@@ -92,6 +94,14 @@ const NavMenu = () => {
                 )
 
                 }
+                <ListItem>
+                    <ListItemButton onClick={() => {window.open("https://github.com/barrycarey/fsstalker-site/issues", "_blank") }}>
+                        <ListItemIcon>
+                            <BugReportIcon />
+                        </ListItemIcon>
+                        <ListItemText>Report Issue</ListItemText>
+                    </ListItemButton>
+                </ListItem>
                 <ListItem>
                     <ListItemButton onClick={loginLogoutOnClick}>
                         <ListItemIcon>

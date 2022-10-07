@@ -1,4 +1,5 @@
 import {
+    Alert,
     Box,
     Button,
     Dialog,
@@ -21,6 +22,7 @@ import {useSnackbar} from "notistack";
 import {useNotificationSvc} from "../../hooks/useNotificationSvc";
 import {getNotificationSvcLogo} from "../../util/helpers";
 import {useAuth} from "../../util/auth";
+import {Link} from "react-router-dom";
 
 
 type CompProps = {
@@ -86,8 +88,7 @@ const EditWatchModal = ({isOpen, closeModal, watch, saveWatch, deleteWatch}: Com
             setAvailableNotificationSvc(availableSvc);
             return;
         }
-        console.log('Avaialbe services')
-        console.log(notificationServices.services.data);
+
         notificationServices.services.data.forEach((svc: NotificationService) => {
             let activeIdx = selectedWatch.notification_services.findIndex((i) => i.id === svc.id);
             if (activeIdx === -1) {
@@ -204,7 +205,9 @@ const EditWatchModal = ({isOpen, closeModal, watch, saveWatch, deleteWatch}: Com
 
                     </Box>
                     <Box sx={{mt: 2}}>
-
+                        {(selectedWatch.notification_services.length === 0 && availableNotificationSvc.length === 0) &&
+                            <Alert severity="error" sx={{mb: 2}}>You should <Link to="/notification-services">create a Notifier</Link> before you create this watcher</Alert>
+                        }
                         <Typography variant={"h6"}>Active Notification Services</Typography>
                             {selectedWatch.notification_services.map(
                                 (svc: NotificationService) => (

@@ -13,7 +13,7 @@ type HeaderPropers = {
 const Header = ({openMenu}: HeaderPropers) => {
 
     const auth = useAuth();
-    const userData = useUser(auth.userData);
+    const userData = useUser(auth?.userData);
     const [drawerOpen, setDrawerOpen] = useState<boolean>(false);
 
     const getUnreadNotificationCount = useCallback(() => {
@@ -38,7 +38,7 @@ const Header = ({openMenu}: HeaderPropers) => {
                         >
                             <MenuIcon />
                         </IconButton>
-                        <Box sx={{width: "220px", display: "inline-flex"}}>
+                        <Box sx={{width: "400px", display: "inline-flex", }}>
                             <Typography
                                 variant="h6"
                                 component="div"
@@ -47,6 +47,20 @@ const Header = ({openMenu}: HeaderPropers) => {
                                     fontFamily: 'monospace',
                                     fontWeight: 700,
                                     letterSpacing: '.3rem',
+                                    display: { xs: 'none', md: 'flex' },
+                                }}>
+                                BST Sleuth
+                            </Typography>
+                            <Typography
+                                variant="h6"
+                                component="div"
+                                sx={{
+                                    flexGrow: 1 ,
+                                    fontFamily: 'monospace',
+                                    fontWeight: 700,
+                                    letterSpacing: '.3rem',
+                                    display: { xs: 'flex', md: 'none' },
+                                    fontSize: "1.1rem"
                                 }}>
                                 BST Sleuth
                             </Typography>

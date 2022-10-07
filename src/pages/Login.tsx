@@ -15,11 +15,7 @@ const Login = () => {
 
     return (
         <Box>
-            {auth.authError !== null &&
-                <Box>
-                    <Alert severity="error">Problem Logging in! - {auth.authError}</Alert>
-                </Box>
-            }
+
             <Typography variant={"h4"}>Login To Get Started!</Typography>
             <Typography variant={"body1"} sx={{mt:2}}>We use your Reddit account to link trackers to you.  The only data retained is your username</Typography>
             <Box sx={{mt:3}}><Button onClick={openRedditAuth} variant={"contained"} color="success">Login With Your Reddit Account</Button></Box>

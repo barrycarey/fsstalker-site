@@ -2,6 +2,8 @@ import {createContext, ReactNode, useContext, useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
 import axios from "axios";
 import {RedditUserData} from "../interfaces/common";
+import {useSnackbar} from "notistack";
+import useInterval from "../hooks/useInterval";
 
 
 
@@ -27,6 +29,7 @@ export const AuthProvider = ({children}: {children: ReactNode} )=> {
     const [recheckDelay, setRecheckDelay] = useState<number>(10000);
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [redditToken, setRedditToken] = useState<string | null>(null);
+    const { enqueueSnackbar } = useSnackbar();
 
 
     useEffect(() => {
@@ -55,8 +58,12 @@ export const AuthProvider = ({children}: {children: ReactNode} )=> {
                 res = await axios.get('https://oauth.reddit.com/api/v1/me/', {
                     headers: { Authorization: `Bearer ${redditToken}` }
                 })
-            } catch (err) {
-                setAuthError('AuthProvider:useEffect - Problem reaching authentication API');
+            } catch (err: any) {
+                if (err.response.status === 401) {
+                    console.log("AuthProvider:useEffect - Reddit token is no good");
+                    enqueueSnackbar("Reddit login expired", {variant: "error"})
+                }
+                setAuthError("AuthProvider:useEffect - Problem reaching authentication API");
                 setIsLoading(false);
                 return;
             }

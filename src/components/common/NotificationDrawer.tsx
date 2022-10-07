@@ -1,4 +1,4 @@
-import {Box, Button, Divider, Drawer, styled, Typography} from "@mui/material";
+import {Box, Button, Divider, Drawer, styled, Typography, Zoom} from "@mui/material";
 import {UserNotification, Watch} from "../../interfaces/common";
 import {useAuth} from "../../util/auth";
 import {useUser} from "../../hooks/useUser";
@@ -21,6 +21,11 @@ export const NotificationDrawer = ({isOpen, closeDrawer}: CompProps) => {
 
     useEffect(() => {
         console.log('NotificationDrawer:useEffect - Updating notificaiton list')
+        console.log(userData.user.data)
+        if (!auth.userData) {
+            console.log('NotificationDrawer:useEffect - Setting empty notify list')
+            setNotificationList([]);
+        }
         if (userData.unreadNotifications.data) {
             let unread: UserNotification[] = [];
             userData.unreadNotifications.data.forEach((notification: UserNotification) => {
@@ -30,7 +35,7 @@ export const NotificationDrawer = ({isOpen, closeDrawer}: CompProps) => {
             })
             setNotificationList(unread);
         }
-    }, [userData.unreadNotifications.data])
+    }, [userData.unreadNotifications.data, auth.userData])
 
     const markNotificationRead = useCallback((id: number) => {
         let selectedNotification = notificationList.find(n => n.id === id);
@@ -52,12 +57,15 @@ export const NotificationDrawer = ({isOpen, closeDrawer}: CompProps) => {
         if (selectedNotificationIdx !== -1) {
             notificationList[selectedNotificationIdx].read = true;
             userData.markNotificationRead.mutate(notificationList[selectedNotificationIdx]);
+            /*
             setNotificationList(prevState => {
                 let newList = [...prevState];
                 newList.splice(selectedNotificationIdx, 1);
                 console.log(newList)
                 return newList;
             })
+
+             */
         }
     }, [notificationList])
 
@@ -91,7 +99,7 @@ export const NotificationDrawer = ({isOpen, closeDrawer}: CompProps) => {
             open={isOpen}
             onClose={() => closeDrawer()}
         >
-            <Box sx={{width: "350px"}}>
+            <Box sx={{width: "450"}}>
                 <Box><Typography variant={"h5"} sx={{textAlign: "center", width: "100%"}}>Notifications</Typography> </Box>
                 <Box sx={{width: "100%", mb: 2, mt: 1, justifyContent: "center"}}>
                     <Button variant="text" color="info" size="small" onClick={markAllAsRead}>Mark All Read</Button>
@@ -99,17 +107,19 @@ export const NotificationDrawer = ({isOpen, closeDrawer}: CompProps) => {
                 </Box>
                 <Divider sx={{ mb: 2}}/>
                 {notificationList.map(n => (
-                    <NotificationRow>
-                        <NotificationRowSection sx={{width: "12%", justifyContent: "center"}}>
-                            <NotificationsIcon />
-                        </NotificationRowSection>
-                        <NotificationRowSection sx={{width: "80%"}}>
-                            {n.message}
-                        </NotificationRowSection>
-                        <NotificationRowSection sx={{width: "8%"}}>
-                            <CloseIcon onClick={() => {markNotificationReadNew(n.id)}}/>
-                        </NotificationRowSection>
-                    </NotificationRow>
+                    <Zoom in={!n.read} key={n.id}>
+                        <NotificationRow >
+                            <NotificationRowSection sx={{width: "12%", justifyContent: "center"}}>
+                                <NotificationsIcon />
+                            </NotificationRowSection>
+                            <NotificationRowSection sx={{width: "80%"}}>
+                                {n.message}
+                            </NotificationRowSection>
+                            <NotificationRowSection sx={{width: "8%"}}>
+                                <CloseIcon onClick={() => {markNotificationReadNew(n.id)}}/>
+                            </NotificationRowSection>
+                        </NotificationRow>
+                    </Zoom>
                 ))}
             </Box>
         </Drawer>

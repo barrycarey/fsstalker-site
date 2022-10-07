@@ -7,6 +7,7 @@ import AddCircleIcon from "@mui/icons-material/AddCircle";
 import MonitorPreview from "../components/home/MonitorPreview";
 import EditWatchModal from "../components/home/EditWatchModal";
 import {useAuth} from "../util/auth";
+import {Link} from "react-router-dom";
 
 const Home = () => {
     const [watchEditIsOpen, setWatchEditIsOpen] = useState<boolean>(false);
@@ -53,7 +54,7 @@ const Home = () => {
                 <Box>
                     {watches.watches.data.length === 0 &&
                         <Alert severity="info">
-                            Looks like you're new! — <strong>Click the + below to create your first watcher</strong>
+                            Looks like you're new! — <strong>Click the + below to create your first watcher or read our <Link to="/getting-started">how to</Link></strong>
                         </Alert>
                     }
                 </Box>

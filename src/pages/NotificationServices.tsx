@@ -6,6 +6,8 @@ import NotificationSvcEditModal from "../components/notificationsvc/Notification
 import {RoundedRow} from "../util/styles";
 import {useNotificationSvc} from "../hooks/useNotificationSvc";
 import { useAuth } from "../util/auth";
+import {Alert} from "@mui/material";
+import {Link} from "react-router-dom";
 
 const NotificationServices = () => {
 
@@ -42,6 +44,11 @@ const NotificationServices = () => {
     if (notificationServices.services.data) {
         return (
                 <div >
+                    {notificationServices.services.data.length === 0 &&
+                        <Alert severity="info">
+                            Looks like you're new! — <strong>Click the + below to create your first Notifier or read our <Link to="/getting-started">how to</Link></strong>
+                        </Alert>
+                    }
                     <RoundedRow onClick={addOnClick} sx={{mt: 2, justifyContent: "center"}}><AddCircleIcon sx={{color: "green", fontSize: "2rem"}} /></RoundedRow>
                 {notificationServices.services.data.map(
                     (svc: NotificationService) => (
