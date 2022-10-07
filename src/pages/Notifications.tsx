@@ -7,7 +7,7 @@ import {useAuth} from "../util/auth";
 
 type SubredditIcon = {
     subreddit: string,
-    iconPath: string
+    iconPath: SubredditIcon
 }
 
 const Notifications = () => {
@@ -19,6 +19,7 @@ const Notifications = () => {
     useEffect(() => {
         let notificationList: SentNotificationTableRow[] = [];
         if (sentNotifications.notifications.data != null) {
+            // @ts-ignore
             sentNotifications.notifications.data.forEach((watch: Watch) => {
                 watch.sent_notifications.forEach((not: SentNotification) => {
                     notificationList.push({

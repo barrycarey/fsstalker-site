@@ -41,7 +41,11 @@ export type SentNotification = {
     triggered_post: string;
     watch_id: number;
     triggered_word: string;
-    submission_created_at: string
+    submission_created_at: string;
+    actual_delay: number;
+    expected_delay: number;
+    owner: User;
+    watch: Watch;
 }
 
 export type UserNotification = {
@@ -67,3 +71,8 @@ export type RedditUserData = {
     avatar: string | undefined;
     authToken: string | null;
 };
+
+export type SubredditIcon = {
+    subreddit: string,
+    iconPath: string
+}
