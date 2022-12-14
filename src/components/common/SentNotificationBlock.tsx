@@ -40,8 +40,8 @@ export const SentNotificationBlock = ({notification, subredditIcons}: CompProps)
                     />
                     <CardContent>
                         <Box sx={{textAlign: "left", padding: "5px"}}>
-                            <Typography variant="body1"><strong>Trigger Word:</strong> {notification.triggered_word}</Typography>
-                            <Typography variant="body1"><strong>Notification Delay:</strong> {notification.actual_delay} seconds</Typography>
+                            <Typography variant="body1"><strong>Trigger:</strong> {notification.triggered_word}</Typography>
+                            <Typography variant="body1"><strong>Delay:</strong> {notification.actual_delay} seconds</Typography>
                         </Box>
                     </CardContent>
 

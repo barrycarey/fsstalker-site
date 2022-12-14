@@ -48,7 +48,7 @@ export const NotificationsNew = () => {
 
             {
                 sentNotifications.notifications.data.map((n: SentNotification) => (
-                    <Grid item xl={4} xs={12}>
+                    <Grid item xl={3} xs={12}>
                         <SentNotificationBlock notification={n} subredditIcons={subredditIcons}/>
                     </Grid>
                 ))
